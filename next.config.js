@@ -20,8 +20,28 @@ module.exports = withSentryConfig(
 
     // Suppresses source map uploading logs during build
     silent: true,
-    org: "your-org-name",
-    project: "your-project-name",
+    org: "rc-sentry-projects",
+    project: "bolt-sentry-simulator",
+
+    // Add monitoring configuration
+    monitor: {
+      enabled: true,
+      endpoints: [
+        {
+          name: 'Health Check',
+          url: '/api/health',
+          interval: '5m',
+          timeout: '10s',
+        },
+      ],
+      crons: [
+        {
+          name: 'Daily Tasks',
+          schedule: '0 0 * * *', // Daily at midnight
+          endpoint: '/api/cron/daily-tasks',
+        },
+      ],
+    },
   },
   {
     // For all available options, see:

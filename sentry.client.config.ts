@@ -12,25 +12,8 @@ Sentry.init({
   // Set environment
   environment: process.env.NODE_ENV || "development",
   
-  // Enable all monitoring features
-  tracesSampleRate: 1.0,
-  replaysSessionSampleRate: 1.0,
-  replaysOnErrorSampleRate: 1.0,
-
-  // Session tracking
-  autoSessionTracking: true,
-  release: process.env.NEXT_PUBLIC_SENTRY_RELEASE || "development",
-
-  // Enable integrations
+  // Initialize integrations
   integrations: [
-    new Sentry.Replay({
-      blockAllMedia: false,
-      maskAllText: false,
-      maskAllInputs: true,
-      networkDetailAllowUrls: ["*"],
-      networkCaptureBodies: true,
-      consoleMethods: ["assert", "count", "debug", "error", "info", "log", "warn"],
-    }),
     new Sentry.BrowserTracing({
       traceFetch: true,
       traceXHR: true,
@@ -38,7 +21,23 @@ Sentry.init({
       startTransactionOnLocationChange: true,
       startTransactionOnPageLoad: true,
     }),
+    new Sentry.Replay({
+      maskAllText: false,
+      blockAllMedia: false,
+      maskAllInputs: true,
+      networkDetailAllowUrls: ["*"],
+      networkCaptureBodies: true,
+    }),
   ],
+
+  // Performance sample rates
+  tracesSampleRate: 1.0,
+  replaysSessionSampleRate: 1.0,
+  replaysOnErrorSampleRate: 1.0,
+
+  // Session tracking
+  autoSessionTracking: true,
+  release: process.env.NEXT_PUBLIC_SENTRY_RELEASE || "development",
 
   // Ensure breadcrumbs are captured
   maxBreadcrumbs: 100,
@@ -56,8 +55,9 @@ Sentry.init({
       event.contexts = {};
     }
 
-    // Add replay ID if available
-    const replay = Sentry.getCurrentHub()?.getScope()?.getReplayId();
+    // Add replay context if available
+    const scope = Sentry.getCurrentHub()?.getScope();
+    const replay = scope?.getAttachment('replay_id');
     if (replay) {
       event.contexts.replay = { replay_id: replay };
     }
