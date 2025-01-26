@@ -10,6 +10,18 @@ const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testEnvironment: 'jest-environment-jsdom',
   coverageDirectory: 'coverage',
+  reporters: [
+    'default',
+    ['jest-junit', {
+      outputDirectory: 'reports',
+      outputName: 'jest-junit.xml',
+      classNameTemplate: '{classname}',
+      titleTemplate: '{title}',
+      ancestorSeparator: ' › ',
+      suiteNameTemplate: '{filename}',
+      addFileAttribute: 'true',
+    }]
+  ],
   collectCoverageFrom: [
     'app/**/*.{js,jsx,ts,tsx}',
     'src/**/*.{js,jsx,ts,tsx}',

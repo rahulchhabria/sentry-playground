@@ -17,6 +17,17 @@ ignore:
   - "coverage/**"
 
 comment:
-  layout: "reach, diff, flags, files"
+  layout: "reach, diff, flags, files, footer"
   behavior: default
   require_changes: false
+
+test_analytics:
+  enabled: true
+  strict: false
+  tests:
+    - "**/*.test.{js,jsx,ts,tsx}"
+  annotations:
+    - type: "test_failures"
+      level: "warning"
+    - type: "test_performance"
+      level: "notice"
