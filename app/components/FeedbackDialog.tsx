@@ -36,11 +36,17 @@ export function FeedbackDialog({ error, eventId, open, onOpenChange }: FeedbackD
     console.log('Submitting feedback:', { eventId, name, email, comments });
     
     // Submit the user feedback to Sentry
-    Sentry.captureUserFeedback({
+    Sentry.captureEvent({
+      type: 'feedback',
       event_id: eventId,
-      name: name,
-      email: email,
-      comments: comments,
+      level: 'info',
+      user: {
+        name: name,
+        email: email
+      },
+      extra: {
+        comments: comments
+      }
     });
 
     // Mark as submitted and close the dialog

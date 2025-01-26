@@ -3,6 +3,7 @@
 import { asyncWithLDProvider, LDClient } from "launchdarkly-react-client-sdk";
 import { ReactNode, useEffect, useState } from "react";
 import * as Sentry from "@sentry/nextjs";
+import type { Event } from "@sentry/types";
 
 // Extend Window interface to include our global properties
 declare global {
@@ -72,7 +73,7 @@ export function Providers({ children }: ProvidersProps) {
       });
 
       // Track error events for LaunchDarkly metrics
-      Sentry.addGlobalEventProcessor((event) => {
+      Sentry.addGlobalEventProcessor((event: Event) => {
         // Get current flags at the time of the error
         const currentFlags = window.LD?.allFlags() || {};
 

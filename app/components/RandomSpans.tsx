@@ -88,9 +88,10 @@ const generateRandomSpan = async () => {
   
   const transaction = Sentry.startTransaction({
     name: `Random ${spanType.name}`,
+    op: "random-span"
   });
 
-  Sentry.configureScope(scope => {
+  Sentry.getCurrentHub().configureScope(scope => {
     scope.setSpan(transaction);
   });
 

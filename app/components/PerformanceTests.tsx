@@ -12,9 +12,10 @@ export function PerformanceTests() {
     setLoading("slow-op");
     const transaction = Sentry.startTransaction({
       name: "Slow Operation",
+      op: "slow-operation"
     });
 
-    Sentry.configureScope(scope => {
+    Sentry.getCurrentHub().configureScope(scope => {
       scope.setSpan(transaction);
     });
 
@@ -39,6 +40,7 @@ export function PerformanceTests() {
     setLoading("slow-api");
     const transaction = Sentry.startTransaction({
       name: "Slow API Call",
+      op: "http"
     });
 
     try {
@@ -64,6 +66,7 @@ export function PerformanceTests() {
     setLoading("nested");
     const transaction = Sentry.startTransaction({
       name: "Nested Operations",
+      op: "nested"
     });
 
     // Database query simulation

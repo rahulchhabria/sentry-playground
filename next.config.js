@@ -11,9 +11,6 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_SENTRY_RELEASE: process.env.VERCEL_GIT_COMMIT_SHA || "development",
   },
-  speedInsights: {
-    enabled: true,
-  },
 };
 
 // Injected content via Sentry wizard below

@@ -44,7 +44,7 @@ Sentry.init({
     // Add feature flag adapter for dev toolbar
     {
       name: "feature-flags",
-      setupOnce: (addGlobalEventProcessor) => {
+      setupOnce: (addGlobalEventProcessor: (callback: (event: any) => Promise<any>) => void) => {
         // Register the feature flag adapter with Sentry's dev tools
         if (typeof window !== 'undefined') {
           // Register the feature flag adapter with Sentry's dev tools
@@ -160,10 +160,11 @@ Sentry.init({
 
     // Add replay context if available
     const scope = Sentry.getCurrentHub()?.getScope();
-    const attachments = scope?.getAttachments();
-    const replay = attachments?.length ? attachments[0] : null;
-    if (replay) {
-      event.contexts.replay = { replay_id: replay };
+    if (scope) {
+      const replay = scope.getAttachments?.()?.length ? scope.getAttachments?.()[0] : null;
+      if (replay) {
+        event.contexts.replay = { replay_id: replay };
+      }
     }
 
     return event;
