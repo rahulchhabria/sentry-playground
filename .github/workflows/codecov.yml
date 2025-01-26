@@ -22,15 +22,17 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
-    - name: Run tests with coverage
-      run: npm run test:coverage
+    - name: Run tests with coverage and analytics
+      run: npm run test:ci
 
-    - name: Upload coverage to Codecov
+    - name: Upload coverage and test analytics to Codecov
       uses: codecov/codecov-action@v5
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         slug: rahulchhabria/sentry-playground
-        files: ./coverage/lcov.info
+        files: |
+          ./coverage/lcov.info
+          ./reports/jest-junit.xml
         flags: unittests
         name: codecov-umbrella
         fail_ci_if_error: true
