@@ -112,7 +112,7 @@ export function FeatureFlags() {
           disabled={!!loading}
         >
           {loading === "error" ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
+            <Loader2 className="h-4 w-4 animate-spin" data-testid="loading-spinner" />
           ) : (
             <Flag className="h-4 w-4" />
           )}
@@ -126,7 +126,7 @@ export function FeatureFlags() {
           disabled={!!loading}
         >
           {loading === "performance" ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
+            <Loader2 className="h-4 w-4 animate-spin" data-testid="loading-spinner" />
           ) : (
             <Settings className="h-4 w-4" />
           )}
@@ -140,7 +140,7 @@ export function FeatureFlags() {
           disabled={!!loading}
         >
           {loading === "context" ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
+            <Loader2 className="h-4 w-4 animate-spin" data-testid="loading-spinner" />
           ) : (
             <Settings className="h-4 w-4" />
           )}

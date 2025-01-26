@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="3" failures="0" errors="0" time="0.866">
+  <testsuite name="RageClickButton.test.tsx" errors="0" failures="0" skipped="0" timestamp="2025-01-26T05:23:33" time="0.535" tests="3">
+    <testcase classname="RageClickButton" name="renders the button" time="0.039" file="app/components/__tests__/RageClickButton.test.tsx">
+    </testcase>
+    <testcase classname="RageClickButton" name="displays the correct text" time="0.003" file="app/components/__tests__/RageClickButton.test.tsx">
+    </testcase>
+    <testcase classname="RageClickButton" name="displays the rage click instruction" time="0.002" file="app/components/__tests__/RageClickButton.test.tsx">
+    </testcase>
+  </testsuite>
+</testsuites>
