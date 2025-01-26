@@ -30,7 +30,6 @@ export default function Home() {
             Sentry Playground
           </h1>
           <p className="text-gray-400 max-w-2xl text-lg">
-            This is a demonstration app for testing Sentry's error monitoring capabilities.
             Test error monitoring, performance tracking, and release management features below.
           </p>
         </div>
