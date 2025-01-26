@@ -47,7 +47,7 @@
     "@radix-ui/react-toggle-group": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.1.2",
     "@sentry/browser": "^7.91.0",
-    "@sentry/nextjs": "^7.91.0",
+    "@sentry/nextjs": "^8.10.0",
     "@sentry/react": "^7.91.0",
     "@sentry/replay": "^7.91.0",
     "@types/node": "20.6.2",
