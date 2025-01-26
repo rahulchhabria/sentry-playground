@@ -1,8 +1,16 @@
 "use client";
 
-import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";
+import { asyncWithLDProvider, LDClient } from "launchdarkly-react-client-sdk";
 import { ReactNode, useEffect, useState } from "react";
 import * as Sentry from "@sentry/nextjs";
+
+// Extend Window interface to include our global properties
+declare global {
+  interface Window {
+    LD?: LDClient;
+    ldClient?: LDClient;
+  }
+}
 
 interface ProvidersProps {
   children: ReactNode;
@@ -40,20 +48,27 @@ export function Providers({ children }: ProvidersProps) {
         },
       });
 
-      // Initialize feature flag context in Sentry immediately
-      window.LD?.getFlags().then((flags: any) => {
-        Sentry.setContext("feature_flags", flags);
-      });
-
-      // Update Sentry context whenever flags change
-      window.LD?.on("change", (flags: any) => {
-        // Send updated flag data to Sentry context
+      // Store the client globally for Sentry feature flag adapter
+      setLDProvider(() => {
+        // After the provider is set up, we can access window.LD
+        const flags = window.LD?.allFlags() || {};
         Sentry.setContext("feature_flags", flags);
         
-        // Also set flags as tags for better filtering
-        Object.entries(flags).forEach(([key, value]) => {
-          Sentry.setTag(`feature_flag_${key}`, String(value));
+        // Store the client globally for Sentry feature flag adapter
+        (window as any).ldClient = window.LD;
+
+        // Update Sentry context whenever flags change
+        window.LD?.on("change", () => {
+          const updatedFlags = window.LD?.allFlags() || {};
+          Sentry.setContext("feature_flags", updatedFlags);
+          
+          // Also set flags as tags for better filtering
+          Object.entries(updatedFlags).forEach(([key, value]) => {
+            Sentry.setTag(`feature_flag_${key}`, String(value));
+          });
         });
+
+        return LDProvider;
       });
 
       // Track error events for LaunchDarkly metrics
@@ -69,7 +84,7 @@ export function Providers({ children }: ProvidersProps) {
           event.tags![`feature_flag_${key}`] = String(value);
         });
 
-        if (event.type === "error" || event.type === "exception") {
+        if (event.exception || event.message) {
           // Track the error event in LaunchDarkly
           window.LD?.track("sentry errors", {
             errorType: event.type,
@@ -82,7 +97,6 @@ export function Providers({ children }: ProvidersProps) {
         return event;
       });
 
-      setLDProvider(() => LDProvider);
     };
 
     initLD();

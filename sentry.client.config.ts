@@ -1,5 +1,32 @@
 import * as Sentry from "@sentry/nextjs";
 
+// Feature flag adapter for LaunchDarkly
+const featureFlagAdapter = {
+  getFlags: async () => {
+    try {
+      // Get the LaunchDarkly client from window
+      const ldClient = (window as any).ldClient;
+      if (!ldClient) {
+        return {};
+      }
+      
+      // Get all flags and their values
+      const allFlags = await ldClient.allFlags();
+      // Format flags according to Sentry's dev toolbar requirements
+      return Object.entries(allFlags).reduce((acc, [key, value]) => {
+        acc[key] = {
+          name: key,
+          value: Boolean(value)
+        };
+        return acc;
+      }, {} as Record<string, { name: string; value: boolean }>);
+    } catch (error) {
+      console.error("Error getting feature flags:", error);
+      return {};
+    }
+  }
+};
+
 Sentry.init({
   dsn: "https://891119ef51d56b1a8c9193f32047d068@o4506312335294464.ingest.us.sentry.io/4508672160628736",
   
@@ -14,9 +41,85 @@ Sentry.init({
   
   // Initialize integrations
   integrations: [
+    // Add feature flag adapter for dev toolbar
+    {
+      name: "feature-flags",
+      setupOnce: (addGlobalEventProcessor) => {
+        // Register the feature flag adapter with Sentry's dev tools
+        if (typeof window !== 'undefined') {
+          // Register the feature flag adapter with Sentry's dev tools
+          (window as any).__SENTRY__ = (window as any).__SENTRY__ || {};
+          (window as any).__SENTRY__.devtools = (window as any).__SENTRY__.devtools || {};
+          (window as any).__SENTRY__.devtools.featureFlags = {
+            enabled: true,
+            getFeatureFlags: async () => {
+              try {
+                const allFlags = await featureFlagAdapter.getFlags();
+                return {
+                  flags: Object.entries(allFlags).map(([key, value]) => ({
+                    id: key,
+                    name: key,
+                    variant: {
+                      value: value.value,
+                      status: 'active'
+                    }
+                  })),
+                  hasError: false
+                };
+              } catch (error: any) {
+                return {
+                  flags: [],
+                  hasError: true,
+                  errorMessage: error?.message || 'Unknown error'
+                };
+              }
+            }
+          };
+
+          // Also expose the feature flags globally for Sentry's dev toolbar
+          (window as any).__SENTRY_DEVTOOLS__ = {
+            featureFlags: {
+              enabled: true,
+              getFeatureFlags: async () => {
+                try {
+                  const allFlags = await featureFlagAdapter.getFlags();
+                  return {
+                    flags: Object.entries(allFlags).map(([key, value]) => ({
+                      id: key,
+                      name: key,
+                      variant: {
+                        value: value.value,
+                        status: 'active'
+                      }
+                    })),
+                    hasError: false
+                  };
+                } catch (error: any) {
+                  return {
+                    flags: [],
+                    hasError: true,
+                    errorMessage: error?.message || 'Unknown error'
+                  };
+                }
+              }
+            }
+          };
+        }
+        
+        // Also add flags to event contexts
+        addGlobalEventProcessor(async (event) => {
+          try {
+            const flags = await featureFlagAdapter.getFlags();
+            event.contexts = event.contexts || {};
+            event.contexts['feature-flags'] = flags;
+          } catch (e) {
+            console.error('Error processing feature flags:', e);
+          }
+          return event;
+        });
+      }
+    },
     new Sentry.BrowserTracing({
-      traceFetch: true,
-      traceXHR: true,
       tracingOrigins: ["localhost", /^\//],
       startTransactionOnLocationChange: true,
       startTransactionOnPageLoad: true,
@@ -57,7 +160,8 @@ Sentry.init({
 
     // Add replay context if available
     const scope = Sentry.getCurrentHub()?.getScope();
-    const replay = scope?.getAttachment('replay_id');
+    const attachments = scope?.getAttachments();
+    const replay = attachments?.length ? attachments[0] : null;
     if (replay) {
       event.contexts.replay = { replay_id: replay };
     }
