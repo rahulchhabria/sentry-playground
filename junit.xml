@@ -1,0 +1,817 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="30" failures="5" errors="0" time="19.987">
+  <testsuite name="RageClickButton" errors="0" failures="0" skipped="0" timestamp="2025-01-26T06:53:05" time="1.821" tests="3">
+    <testcase classname="RageClickButton renders the button" name="RageClickButton renders the button" time="0.115">
+    </testcase>
+    <testcase classname="RageClickButton displays the correct text" name="RageClickButton displays the correct text" time="0.005">
+    </testcase>
+    <testcase classname="RageClickButton displays the rage click instruction" name="RageClickButton displays the rage click instruction" time="0.014">
+    </testcase>
+  </testsuite>
+  <testsuite name="ErrorButtons" errors="0" failures="0" skipped="0" timestamp="2025-01-26T06:53:05" time="1.883" tests="7">
+    <testcase classname="ErrorButtons renders all error buttons" name="ErrorButtons renders all error buttons" time="0.111">
+    </testcase>
+    <testcase classname="ErrorButtons feedback button is initially disabled" name="ErrorButtons feedback button is initially disabled" time="0.008">
+    </testcase>
+    <testcase classname="ErrorButtons handles runtime error correctly" name="ErrorButtons handles runtime error correctly" time="0.026">
+    </testcase>
+    <testcase classname="ErrorButtons handles promise rejection correctly" name="ErrorButtons handles promise rejection correctly" time="0.014">
+    </testcase>
+    <testcase classname="ErrorButtons handles type error correctly" name="ErrorButtons handles type error correctly" time="0.017">
+    </testcase>
+    <testcase classname="ErrorButtons enables feedback button after error" name="ErrorButtons enables feedback button after error" time="0.015">
+    </testcase>
+    <testcase classname="ErrorButtons logs error and event ID when error occurs" name="ErrorButtons logs error and event ID when error occurs" time="0.006">
+    </testcase>
+  </testsuite>
+  <testsuite name="FeedbackDialog" errors="0" failures="0" skipped="0" timestamp="2025-01-26T06:53:05" time="5.87" tests="7">
+    <testcase classname="FeedbackDialog renders dialog content when open" name="FeedbackDialog renders dialog content when open" time="0.404">
+    </testcase>
+    <testcase classname="FeedbackDialog does not render dialog content when closed" name="FeedbackDialog does not render dialog content when closed" time="0.002">
+    </testcase>
+    <testcase classname="FeedbackDialog submits feedback successfully" name="FeedbackDialog submits feedback successfully" time="1.599">
+    </testcase>
+    <testcase classname="FeedbackDialog requires all fields to be filled" name="FeedbackDialog requires all fields to be filled" time="0.023">
+    </testcase>
+    <testcase classname="FeedbackDialog validates email format" name="FeedbackDialog validates email format" time="0.185">
+    </testcase>
+    <testcase classname="FeedbackDialog logs feedback submission for debugging" name="FeedbackDialog logs feedback submission for debugging" time="0.174">
+    </testcase>
+    <testcase classname="FeedbackDialog resets form after submission" name="FeedbackDialog resets form after submission" time="1.534">
+    </testcase>
+  </testsuite>
+  <testsuite name="FeatureFlags" errors="0" failures="2" skipped="0" timestamp="2025-01-26T06:53:05" time="7.244" tests="7">
+    <testcase classname="FeatureFlags renders feature flags status correctly" name="FeatureFlags renders feature flags status correctly" time="0.121">
+    </testcase>
+    <testcase classname="FeatureFlags simulates feature error with new feature enabled" name="FeatureFlags simulates feature error with new feature enabled" time="0.013">
+    </testcase>
+    <testcase classname="FeatureFlags simulates feature error with new feature disabled" name="FeatureFlags simulates feature error with new feature disabled" time="0.006">
+    </testcase>
+    <testcase classname="FeatureFlags tracks performance with transaction and spans" name="FeatureFlags tracks performance with transaction and spans" time="3.038">
+    </testcase>
+    <testcase classname="FeatureFlags updates user context" name="FeatureFlags updates user context" time="0.038">
+    </testcase>
+    <testcase classname="FeatureFlags disables buttons while loading" name="FeatureFlags disables buttons while loading" time="1.207">
+      <failure>Error: expect(element).toBeDisabled()
+
+Received element is not disabled:
+  &lt;button class=&quot;justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2 flex items-center gap-2&quot; /&gt;
+
+Ignored nodes: comments, script, style
+&lt;html&gt;
+  &lt;head /&gt;
+  &lt;body&gt;
+    &lt;div&gt;
+      &lt;div
+        class=&quot;space-y-6&quot;
+      &gt;
+        &lt;div
+          class=&quot;grid grid-cols-1 md:grid-cols-2 gap-4&quot;
+        &gt;
+          &lt;div
+            class=&quot;rounded-lg border text-card-foreground shadow-sm p-4 bg-gray-700&quot;
+          &gt;
+            &lt;div
+              class=&quot;flex items-center justify-between&quot;
+            &gt;
+              &lt;div
+                class=&quot;flex items-center gap-2&quot;
+              &gt;
+                &lt;svg
+                  class=&quot;lucide lucide-flag h-4 w-4 text-blue-400&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;24&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;2&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;24&quot;
+                  xmlns=&quot;http://www.w3.org/2000/svg&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z&quot;
+                  /&gt;
+                  &lt;line
+                    x1=&quot;4&quot;
+                    x2=&quot;4&quot;
+                    y1=&quot;22&quot;
+                    y2=&quot;15&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                &lt;span&gt;
+                  New Feature
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;span
+                class=&quot;text-red-400&quot;
+              &gt;
+                Disabled
+              &lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div
+            class=&quot;rounded-lg border text-card-foreground shadow-sm p-4 bg-gray-700&quot;
+          &gt;
+            &lt;div
+              class=&quot;flex items-center justify-between&quot;
+            &gt;
+              &lt;div
+                class=&quot;flex items-center gap-2&quot;
+              &gt;
+                &lt;svg
+                  class=&quot;lucide lucide-settings h-4 w-4 text-purple-400&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;24&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-linecap=&quot;round&quot;
+                  stroke-linejoin=&quot;round&quot;
+                  stroke-width=&quot;2&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;24&quot;
+                  xmlns=&quot;http://www.w3.org/2000/svg&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z&quot;
+                  /&gt;
+                  &lt;circle
+                    cx=&quot;12&quot;
+                    cy=&quot;12&quot;
+                    r=&quot;3&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                &lt;span&gt;
+                  Beta Feature
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;span
+                class=&quot;text-red-400&quot;
+              &gt;
+                Disabled
+              &lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div
+          class=&quot;grid grid-cols-1 md:grid-cols-2 gap-4&quot;
+        &gt;
+          &lt;button
+            class=&quot;justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2 flex items-center gap-2&quot;
+          &gt;
+            &lt;svg
+              class=&quot;lucide lucide-flag h-4 w-4&quot;
+              fill=&quot;none&quot;
+              height=&quot;24&quot;
+              stroke=&quot;currentColor&quot;
+              stroke-linecap=&quot;round&quot;
+              stroke-linejoin=&quot;round&quot;
+              stroke-width=&quot;2&quot;
+              viewBox=&quot;0 0 24 24&quot;
+              width=&quot;24&quot;
+              xmlns=&quot;http://www.w3.org/2000/svg&quot;
+            &gt;
+              &lt;path
+                d=&quot;M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z&quot;
+              /&gt;
+              &lt;line
+                x1=&quot;4&quot;
+                x2=&quot;4&quot;
+                y1=&quot;22&quot;
+                y2=&quot;15&quot;
+              /&gt;
+            &lt;/svg&gt;
+            Simulate Feature Error
+          &lt;/button&gt;
+          &lt;button
+            class=&quot;justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2 flex items-center gap-2&quot;
+          &gt;
+            &lt;svg
+              class=&quot;lucide lucide-settings h-4 w-4&quot;
+              fill=&quot;none&quot;
+              height=&quot;24&quot;
+              stroke=&quot;currentColor&quot;
+              stroke-linecap=&quot;round&quot;
+              stroke-linejoin=&quot;round&quot;
+              stroke-width=&quot;2&quot;
+              viewBox=&quot;0 0 24 24&quot;
+              width=&quot;24&quot;
+              xmlns=&quot;http://www.w3.org/2000/svg&quot;
+            &gt;
+              &lt;path
+                d=&quot;M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z&quot;
+              /&gt;
+              &lt;circle
+                cx=&quot;12&quot;
+                cy=&quot;12&quot;
+                r=&quot;3&quot;
+              /&gt;
+            &lt;/svg&gt;
+            Test Feature Performance
+          &lt;/button&gt;
+          &lt;button
+            class=&quot;justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2 flex items-center gap-2 col-span-full&quot;
+          &gt;
+            &lt;svg
+              class=&quot;lucide lucide-settings h-4 w-4&quot;
+              fill=&quot;none&quot;
+              height=&quot;24&quot;
+              stroke=&quot;currentColor&quot;
+              stroke-linecap=&quot;round&quot;
+              stroke-linejoin=&quot;round&quot;
+              stroke-width=&quot;2&quot;
+              viewBox=&quot;0 0 24 24&quot;
+              width=&quot;24&quot;
+              xmlns=&quot;http://www.w3.org/2000/svg&quot;
+            &gt;
+              &lt;path
+                d=&quot;M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z&quot;
+              /&gt;
+              &lt;circle
+                cx=&quot;12&quot;
+                cy=&quot;12&quot;
+                r=&quot;3&quot;
+              /&gt;
+            &lt;/svg&gt;
+            Update User Context
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+    at toBeDisabled (/Users/rahulchhabria/Documents/GitHub/sentry-playground/app/components/__tests__/FeatureFlags.test.tsx:158:27)
+    at runWithExpensiveErrorDiagnosticsDisabled (/Users/rahulchhabria/Documents/GitHub/sentry-playground/node_modules/@testing-library/dom/dist/config.js:47:12)
+    at checkCallback (/Users/rahulchhabria/Documents/GitHub/sentry-playground/node_modules/@testing-library/dom/dist/wait-for.js:124:77)
+    at checkRealTimersCallback (/Users/rahulchhabria/Documents/GitHub/sentry-playground/node_modules/@testing-library/dom/dist/wait-for.js:118:16)
+    at Timeout.task [as _onTimeout] (/Users/rahulchhabria/Documents/GitHub/sentry-playground/node_modules/jsdom/lib/jsdom/browser/Window.js:520:19)
+    at listOnTimeout (node:internal/timers:569:17)
+    at processTimers (node:internal/timers:512:7)</failure>
+    </testcase>
+    <testcase classname="FeatureFlags shows loading spinner during operations" name="FeatureFlags shows loading spinner during operations" time="1.042">
+      <failure>Error: Unable to find an element by: [data-testid=&quot;loading-spinner&quot;]
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;space-y-6&quot;
+    &gt;
+      &lt;div
+        class=&quot;grid grid-cols-1 md:grid-cols-2 gap-4&quot;
+      &gt;
+        &lt;div
+          class=&quot;rounded-lg border text-card-foreground shadow-sm p-4 bg-gray-700&quot;
+        &gt;
+          &lt;div
+            class=&quot;flex items-center justify-between&quot;
+          &gt;
+            &lt;div
+              class=&quot;flex items-center gap-2&quot;
+            &gt;
+              &lt;svg
+                class=&quot;lucide lucide-flag h-4 w-4 text-blue-400&quot;
+                fill=&quot;none&quot;
+                height=&quot;24&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-linecap=&quot;round&quot;
+                stroke-linejoin=&quot;round&quot;
+                stroke-width=&quot;2&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;24&quot;
+                xmlns=&quot;http://www.w3.org/2000/svg&quot;
+              &gt;
+                &lt;path
+                  d=&quot;M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z&quot;
+                /&gt;
+                &lt;line
+                  x1=&quot;4&quot;
+                  x2=&quot;4&quot;
+                  y1=&quot;22&quot;
+                  y2=&quot;15&quot;
+                /&gt;
+              &lt;/svg&gt;
+              &lt;span&gt;
+                New Feature
+              &lt;/span&gt;
+            &lt;/div&gt;
+            &lt;span
+              class=&quot;text-red-400&quot;
+            &gt;
+              Disabled
+            &lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div
+          class=&quot;rounded-lg border text-card-foreground shadow-sm p-4 bg-gray-700&quot;
+        &gt;
+          &lt;div
+            class=&quot;flex items-center justify-between&quot;
+          &gt;
+            &lt;div
+              class=&quot;flex items-center gap-2&quot;
+            &gt;
+              &lt;svg
+                class=&quot;lucide lucide-settings h-4 w-4 text-purple-400&quot;
+                fill=&quot;none&quot;
+                height=&quot;24&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-linecap=&quot;round&quot;
+                stroke-linejoin=&quot;round&quot;
+                stroke-width=&quot;2&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;24&quot;
+                xmlns=&quot;http://www.w3.org/2000/svg&quot;
+              &gt;
+                &lt;path
+                  d=&quot;M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z&quot;
+                /&gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;3&quot;
+                /&gt;
+              &lt;/svg&gt;
+              &lt;span&gt;
+                Beta Feature
+              &lt;/span&gt;
+            &lt;/div&gt;
+            &lt;span
+              class=&quot;text-red-400&quot;
+            &gt;
+              Disabled
+            &lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div
+        class=&quot;grid grid-cols-1 md:grid-cols-2 gap-4&quot;
+      &gt;
+        &lt;button
+          class=&quot;justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2 flex items-center gap-2&quot;
+        &gt;
+          &lt;svg
+            class=&quot;lucide lucide-flag h-4 w-4&quot;
+            fill=&quot;none&quot;
+            height=&quot;24&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-linecap=&quot;round&quot;
+            stroke-linejoin=&quot;round&quot;
+            stroke-width=&quot;2&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;24&quot;
+            xmlns=&quot;http://www.w3.org/2000/svg&quot;
+          &gt;
+            &lt;path
+              d=&quot;M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z&quot;
+            /&gt;
+            &lt;line
+              x1=&quot;4&quot;
+              x2=&quot;4&quot;
+              y1=&quot;22&quot;
+              y2=&quot;15&quot;
+            /&gt;
+          &lt;/svg&gt;
+          Simulate Feature Error
+        &lt;/button&gt;
+        &lt;button
+          class=&quot;justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2 flex items-center gap-2&quot;
+        &gt;
+          &lt;svg
+            class=&quot;lucide lucide-settings h-4 w-4&quot;
+            fill=&quot;none&quot;
+            height=&quot;24&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-linecap=&quot;round&quot;
+            stroke-linejoin=&quot;round&quot;
+            stroke-width=&quot;2&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;24&quot;
+            xmlns=&quot;http://www.w3.org/2000/svg&quot;
+          &gt;
+            &lt;path
+              d=&quot;M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z&quot;
+            /&gt;
+            &lt;circle
+              cx=&quot;12&quot;
+              cy=&quot;12&quot;
+              r=&quot;3&quot;
+            /&gt;
+          &lt;/svg&gt;
+          Test Feature Performance
+        &lt;/button&gt;
+        &lt;button
+          class=&quot;justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2 flex items-center gap-2 col-span-full&quot;
+        &gt;
+          &lt;svg
+            class=&quot;lucide lucide-settings h-4 w-4&quot;
+            fill=&quot;none&quot;
+            height=&quot;24&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-linecap=&quot;round&quot;
+            stroke-linejoin=&quot;round&quot;
+            stroke-width=&quot;2&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;24&quot;
+            xmlns=&quot;http://www.w3.org/2000/svg&quot;
+          &gt;
+            &lt;path
+              d=&quot;M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z&quot;
+            /&gt;
+            &lt;circle
+              cx=&quot;12&quot;
+              cy=&quot;12&quot;
+              r=&quot;3&quot;
+            /&gt;
+          &lt;/svg&gt;
+          Update User Context
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+    at waitForWrapper (/Users/rahulchhabria/Documents/GitHub/sentry-playground/node_modules/@testing-library/dom/dist/wait-for.js:163:27)
+    at Object.&lt;anonymous&gt; (/Users/rahulchhabria/Documents/GitHub/sentry-playground/app/components/__tests__/FeatureFlags.test.tsx:179:18)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="PerformanceTests" errors="0" failures="3" skipped="0" timestamp="2025-01-26T06:53:05" time="17.088" tests="6">
+    <testcase classname="PerformanceTests renders all performance test buttons" name="PerformanceTests renders all performance test buttons" time="0.066">
+    </testcase>
+    <testcase classname="PerformanceTests simulates slow operation with transaction tracking" name="PerformanceTests simulates slow operation with transaction tracking" time="3.063">
+      <failure>Error: expect(element).toBeDisabled()
+
+Received element is not disabled:
+  &lt;button class=&quot;justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2 flex items-center gap-2&quot; /&gt;
+
+Ignored nodes: comments, script, style
+&lt;html&gt;
+  &lt;head /&gt;
+  &lt;body&gt;
+    &lt;div&gt;
+      &lt;div
+        class=&quot;grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl&quot;
+      &gt;
+        &lt;button
+          class=&quot;justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2 flex items-center gap-2&quot;
+        &gt;
+          &lt;svg
+            class=&quot;lucide lucide-clock h-4 w-4&quot;
+            fill=&quot;none&quot;
+            height=&quot;24&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-linecap=&quot;round&quot;
+            stroke-linejoin=&quot;round&quot;
+            stroke-width=&quot;2&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;24&quot;
+            xmlns=&quot;http://www.w3.org/2000/svg&quot;
+          &gt;
+            &lt;circle
+              cx=&quot;12&quot;
+              cy=&quot;12&quot;
+              r=&quot;10&quot;
+            /&gt;
+            &lt;polyline
+              points=&quot;12 6 12 12 16 14&quot;
+            /&gt;
+          &lt;/svg&gt;
+          Trigger Slow Operation
+        &lt;/button&gt;
+        &lt;button
+          class=&quot;justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2 flex items-center gap-2&quot;
+        &gt;
+          &lt;svg
+            class=&quot;lucide lucide-server h-4 w-4&quot;
+            fill=&quot;none&quot;
+            height=&quot;24&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-linecap=&quot;round&quot;
+            stroke-linejoin=&quot;round&quot;
+            stroke-width=&quot;2&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;24&quot;
+            xmlns=&quot;http://www.w3.org/2000/svg&quot;
+          &gt;
+            &lt;rect
+              height=&quot;8&quot;
+              rx=&quot;2&quot;
+              ry=&quot;2&quot;
+              width=&quot;20&quot;
+              x=&quot;2&quot;
+              y=&quot;2&quot;
+            /&gt;
+            &lt;rect
+              height=&quot;8&quot;
+              rx=&quot;2&quot;
+              ry=&quot;2&quot;
+              width=&quot;20&quot;
+              x=&quot;2&quot;
+              y=&quot;14&quot;
+            /&gt;
+            &lt;line
+              x1=&quot;6&quot;
+              x2=&quot;6.01&quot;
+              y1=&quot;6&quot;
+              y2=&quot;6&quot;
+            /&gt;
+            &lt;line
+              x1=&quot;6&quot;
+              x2=&quot;6.01&quot;
+              y1=&quot;18&quot;
+              y2=&quot;18&quot;
+            /&gt;
+          &lt;/svg&gt;
+          Trigger Slow API Call
+        &lt;/button&gt;
+        &lt;button
+          class=&quot;justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2 flex items-center gap-2 col-span-full&quot;
+        &gt;
+          &lt;svg
+            class=&quot;lucide lucide-database h-4 w-4&quot;
+            fill=&quot;none&quot;
+            height=&quot;24&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-linecap=&quot;round&quot;
+            stroke-linejoin=&quot;round&quot;
+            stroke-width=&quot;2&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;24&quot;
+            xmlns=&quot;http://www.w3.org/2000/svg&quot;
+          &gt;
+            &lt;ellipse
+              cx=&quot;12&quot;
+              cy=&quot;5&quot;
+              rx=&quot;9&quot;
+              ry=&quot;3&quot;
+            /&gt;
+            &lt;path
+              d=&quot;M3 5V19A9 3 0 0 0 21 19V5&quot;
+            /&gt;
+            &lt;path
+              d=&quot;M3 12A9 3 0 0 0 21 12&quot;
+            /&gt;
+          &lt;/svg&gt;
+          Trigger Nested Operations
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+    at toBeDisabled (/Users/rahulchhabria/Documents/GitHub/sentry-playground/app/components/__tests__/PerformanceTests.test.tsx:46:22)
+    at runWithExpensiveErrorDiagnosticsDisabled (/Users/rahulchhabria/Documents/GitHub/sentry-playground/node_modules/@testing-library/dom/dist/config.js:47:12)
+    at checkCallback (/Users/rahulchhabria/Documents/GitHub/sentry-playground/node_modules/@testing-library/dom/dist/wait-for.js:124:77)
+    at checkRealTimersCallback (/Users/rahulchhabria/Documents/GitHub/sentry-playground/node_modules/@testing-library/dom/dist/wait-for.js:118:16)
+    at Timeout.task [as _onTimeout] (/Users/rahulchhabria/Documents/GitHub/sentry-playground/node_modules/jsdom/lib/jsdom/browser/Window.js:520:19)
+    at listOnTimeout (node:internal/timers:569:17)
+    at processTimers (node:internal/timers:512:7)</failure>
+    </testcase>
+    <testcase classname="PerformanceTests simulates slow API call with error handling" name="PerformanceTests simulates slow API call with error handling" time="3.034">
+    </testcase>
+    <testcase classname="PerformanceTests simulates nested operations with multiple spans" name="PerformanceTests simulates nested operations with multiple spans" time="3.01">
+    </testcase>
+    <testcase classname="PerformanceTests disables all buttons while any operation is running" name="PerformanceTests disables all buttons while any operation is running" time="3.005">
+      <failure>Error: expect(element).toBeDisabled()
+
+Received element is not disabled:
+  &lt;button class=&quot;justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2 flex items-center gap-2&quot; /&gt;
+
+Ignored nodes: comments, script, style
+&lt;html&gt;
+  &lt;head /&gt;
+  &lt;body&gt;
+    &lt;div&gt;
+      &lt;div
+        class=&quot;grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl&quot;
+      &gt;
+        &lt;button
+          class=&quot;justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2 flex items-center gap-2&quot;
+        &gt;
+          &lt;svg
+            class=&quot;lucide lucide-clock h-4 w-4&quot;
+            fill=&quot;none&quot;
+            height=&quot;24&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-linecap=&quot;round&quot;
+            stroke-linejoin=&quot;round&quot;
+            stroke-width=&quot;2&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;24&quot;
+            xmlns=&quot;http://www.w3.org/2000/svg&quot;
+          &gt;
+            &lt;circle
+              cx=&quot;12&quot;
+              cy=&quot;12&quot;
+              r=&quot;10&quot;
+            /&gt;
+            &lt;polyline
+              points=&quot;12 6 12 12 16 14&quot;
+            /&gt;
+          &lt;/svg&gt;
+          Trigger Slow Operation
+        &lt;/button&gt;
+        &lt;button
+          class=&quot;justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2 flex items-center gap-2&quot;
+        &gt;
+          &lt;svg
+            class=&quot;lucide lucide-server h-4 w-4&quot;
+            fill=&quot;none&quot;
+            height=&quot;24&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-linecap=&quot;round&quot;
+            stroke-linejoin=&quot;round&quot;
+            stroke-width=&quot;2&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;24&quot;
+            xmlns=&quot;http://www.w3.org/2000/svg&quot;
+          &gt;
+            &lt;rect
+              height=&quot;8&quot;
+              rx=&quot;2&quot;
+              ry=&quot;2&quot;
+              width=&quot;20&quot;
+              x=&quot;2&quot;
+              y=&quot;2&quot;
+            /&gt;
+            &lt;rect
+              height=&quot;8&quot;
+              rx=&quot;2&quot;
+              ry=&quot;2&quot;
+              width=&quot;20&quot;
+              x=&quot;2&quot;
+              y=&quot;14&quot;
+            /&gt;
+            &lt;line
+              x1=&quot;6&quot;
+              x2=&quot;6.01&quot;
+              y1=&quot;6&quot;
+              y2=&quot;6&quot;
+            /&gt;
+            &lt;line
+              x1=&quot;6&quot;
+              x2=&quot;6.01&quot;
+              y1=&quot;18&quot;
+              y2=&quot;18&quot;
+            /&gt;
+          &lt;/svg&gt;
+          Trigger Slow API Call
+        &lt;/button&gt;
+        &lt;button
+          class=&quot;justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2 flex items-center gap-2 col-span-full&quot;
+        &gt;
+          &lt;svg
+            class=&quot;lucide lucide-database h-4 w-4&quot;
+            fill=&quot;none&quot;
+            height=&quot;24&quot;
+            stroke=&quot;currentColor&quot;
+            stroke-linecap=&quot;round&quot;
+            stroke-linejoin=&quot;round&quot;
+            stroke-width=&quot;2&quot;
+            viewBox=&quot;0 0 24 24&quot;
+            width=&quot;24&quot;
+            xmlns=&quot;http://www.w3.org/2000/svg&quot;
+          &gt;
+            &lt;ellipse
+              cx=&quot;12&quot;
+              cy=&quot;5&quot;
+              rx=&quot;9&quot;
+              ry=&quot;3&quot;
+            /&gt;
+            &lt;path
+              d=&quot;M3 5V19A9 3 0 0 0 21 19V5&quot;
+            /&gt;
+            &lt;path
+              d=&quot;M3 12A9 3 0 0 0 21 12&quot;
+            /&gt;
+          &lt;/svg&gt;
+          Trigger Nested Operations
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+    at toBeDisabled (/Users/rahulchhabria/Documents/GitHub/sentry-playground/app/components/__tests__/PerformanceTests.test.tsx:171:28)
+    at runWithExpensiveErrorDiagnosticsDisabled (/Users/rahulchhabria/Documents/GitHub/sentry-playground/node_modules/@testing-library/dom/dist/config.js:47:12)
+    at checkCallback (/Users/rahulchhabria/Documents/GitHub/sentry-playground/node_modules/@testing-library/dom/dist/wait-for.js:124:77)
+    at checkRealTimersCallback (/Users/rahulchhabria/Documents/GitHub/sentry-playground/node_modules/@testing-library/dom/dist/wait-for.js:118:16)
+    at Timeout.task [as _onTimeout] (/Users/rahulchhabria/Documents/GitHub/sentry-playground/node_modules/jsdom/lib/jsdom/browser/Window.js:520:19)
+    at listOnTimeout (node:internal/timers:569:17)
+    at processTimers (node:internal/timers:512:7)</failure>
+    </testcase>
+    <testcase classname="PerformanceTests shows loading spinner only on the active operation button" name="PerformanceTests shows loading spinner only on the active operation button" time="3.041">
+      <failure>Error: Unable to find an element by: [data-testid=&quot;loading-spinner&quot;]
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl&quot;
+    &gt;
+      &lt;button
+        class=&quot;justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2 flex items-center gap-2&quot;
+      &gt;
+        &lt;svg
+          class=&quot;lucide lucide-clock h-4 w-4&quot;
+          fill=&quot;none&quot;
+          height=&quot;24&quot;
+          stroke=&quot;currentColor&quot;
+          stroke-linecap=&quot;round&quot;
+          stroke-linejoin=&quot;round&quot;
+          stroke-width=&quot;2&quot;
+          viewBox=&quot;0 0 24 24&quot;
+          width=&quot;24&quot;
+          xmlns=&quot;http://www.w3.org/2000/svg&quot;
+        &gt;
+          &lt;circle
+            cx=&quot;12&quot;
+            cy=&quot;12&quot;
+            r=&quot;10&quot;
+          /&gt;
+          &lt;polyline
+            points=&quot;12 6 12 12 16 14&quot;
+          /&gt;
+        &lt;/svg&gt;
+        Trigger Slow Operation
+      &lt;/button&gt;
+      &lt;button
+        class=&quot;justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2 flex items-center gap-2&quot;
+      &gt;
+        &lt;svg
+          class=&quot;lucide lucide-server h-4 w-4&quot;
+          fill=&quot;none&quot;
+          height=&quot;24&quot;
+          stroke=&quot;currentColor&quot;
+          stroke-linecap=&quot;round&quot;
+          stroke-linejoin=&quot;round&quot;
+          stroke-width=&quot;2&quot;
+          viewBox=&quot;0 0 24 24&quot;
+          width=&quot;24&quot;
+          xmlns=&quot;http://www.w3.org/2000/svg&quot;
+        &gt;
+          &lt;rect
+            height=&quot;8&quot;
+            rx=&quot;2&quot;
+            ry=&quot;2&quot;
+            width=&quot;20&quot;
+            x=&quot;2&quot;
+            y=&quot;2&quot;
+          /&gt;
+          &lt;rect
+            height=&quot;8&quot;
+            rx=&quot;2&quot;
+            ry=&quot;2&quot;
+            width=&quot;20&quot;
+            x=&quot;2&quot;
+            y=&quot;14&quot;
+          /&gt;
+          &lt;line
+            x1=&quot;6&quot;
+            x2=&quot;6.01&quot;
+            y1=&quot;6&quot;
+            y2=&quot;6&quot;
+          /&gt;
+          &lt;line
+            x1=&quot;6&quot;
+            x2=&quot;6.01&quot;
+            y1=&quot;18&quot;
+            y2=&quot;18&quot;
+          /&gt;
+        &lt;/svg&gt;
+        Trigger Slow API Call
+      &lt;/button&gt;
+      &lt;button
+        class=&quot;justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2 flex items-center gap-2 col-span-full&quot;
+      &gt;
+        &lt;svg
+          class=&quot;lucide lucide-database h-4 w-4&quot;
+          fill=&quot;none&quot;
+          height=&quot;24&quot;
+          stroke=&quot;currentColor&quot;
+          stroke-linecap=&quot;round&quot;
+          stroke-linejoin=&quot;round&quot;
+          stroke-width=&quot;2&quot;
+          viewBox=&quot;0 0 24 24&quot;
+          width=&quot;24&quot;
+          xmlns=&quot;http://www.w3.org/2000/svg&quot;
+        &gt;
+          &lt;ellipse
+            cx=&quot;12&quot;
+            cy=&quot;5&quot;
+            rx=&quot;9&quot;
+            ry=&quot;3&quot;
+          /&gt;
+          &lt;path
+            d=&quot;M3 5V19A9 3 0 0 0 21 19V5&quot;
+          /&gt;
+          &lt;path
+            d=&quot;M3 12A9 3 0 0 0 21 12&quot;
+          /&gt;
+        &lt;/svg&gt;
+        Trigger Nested Operations
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+    at waitForWrapper (/Users/rahulchhabria/Documents/GitHub/sentry-playground/node_modules/@testing-library/dom/dist/wait-for.js:163:27)
+    at Object.&lt;anonymous&gt; (/Users/rahulchhabria/Documents/GitHub/sentry-playground/app/components/__tests__/PerformanceTests.test.tsx:193:18)</failure>
+    </testcase>
+  </testsuite>
+</testsuites>

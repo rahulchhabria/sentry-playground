@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { FeatureFlags } from '../FeatureFlags';
 import * as Sentry from '@sentry/nextjs';
 import { useFlags, useLDClient } from 'launchdarkly-react-client-sdk';
@@ -110,6 +110,7 @@ describe('FeatureFlags', () => {
 
     expect(Sentry.startTransaction).toHaveBeenCalledWith({
       name: 'Feature Performance Test',
+      op: 'feature.performance'
     });
 
     expect(mockTransaction.startChild).toHaveBeenCalledWith({
@@ -149,18 +150,21 @@ describe('FeatureFlags', () => {
     const performanceButton = screen.getByRole('button', { name: /Test Feature Performance/i });
     const contextButton = screen.getByRole('button', { name: /Update User Context/i });
 
-    fireEvent.click(errorButton);
+    await act(async () => {
+      fireEvent.click(errorButton);
+    });
 
-    // Verify buttons are disabled during loading
-    expect(errorButton).toHaveAttribute('disabled');
-    expect(performanceButton).toHaveAttribute('disabled');
-    expect(contextButton).toHaveAttribute('disabled');
+    await waitFor(() => {
+      expect(errorButton).toBeDisabled();
+      expect(performanceButton).toBeDisabled();
+      expect(contextButton).toBeDisabled();
+    });
 
     // Wait for loading to complete
     await waitFor(() => {
-      expect(errorButton).not.toHaveAttribute('disabled');
-      expect(performanceButton).not.toHaveAttribute('disabled');
-      expect(contextButton).not.toHaveAttribute('disabled');
+      expect(errorButton).not.toBeDisabled();
+      expect(performanceButton).not.toBeDisabled();
+      expect(contextButton).not.toBeDisabled();
     });
   });
 
@@ -168,14 +172,17 @@ describe('FeatureFlags', () => {
     render(<FeatureFlags />);
     
     const errorButton = screen.getByRole('button', { name: /Simulate Feature Error/i });
-    fireEvent.click(errorButton);
+    await act(async () => {
+      fireEvent.click(errorButton);
+    });
 
-    // Check for loading spinner by its class name since it's a Loader2 component
-    expect(screen.getByRole('button', { name: /Simulate Feature Error/i }).querySelector('.animate-spin')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
+    });
 
     // Wait for loading to complete
     await waitFor(() => {
-      expect(screen.queryByRole('button', { name: /Simulate Feature Error/i })?.querySelector('.animate-spin')).not.toBeInTheDocument();
+      expect(screen.queryByTestId('loading-spinner')).not.toBeInTheDocument();
     });
   });
 });

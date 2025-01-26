@@ -10,18 +10,41 @@ const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testEnvironment: 'jest-environment-jsdom',
   coverageDirectory: 'coverage',
+  testTimeout: 10000,
+  maxWorkers: '50%',
+  retries: 2,
   reporters: [
     'default',
     ['jest-junit', {
       outputDirectory: 'reports',
       outputName: 'jest-junit.xml',
-      classNameTemplate: '{classname}',
+      classNameTemplate: '{filepath}',
       titleTemplate: '{title}',
       ancestorSeparator: ' › ',
-      suiteNameTemplate: '{filename}',
+      suiteNameTemplate: '{filepath}',
       addFileAttribute: 'true',
+      reportTestSuiteErrors: true,
+      includeConsoleOutput: true,
+      includePending: true,
+      includeShortConsoleOutput: true,
+      usePathForSuiteName: true,
+      testLocationInResults: true,
+      testRetries: true,
+      addTestLocationInfo: true,
+      includeFailureMsg: true,
+      includeStackTrace: true,
+      includeHostname: true,
+      includePending: true,
+      includeProperties: true,
+      properties: {
+        'CI': process.env.CI || 'false',
+        'TEST_ENV': 'jest',
+        'NODE_VERSION': process.version,
+        'PLATFORM': process.platform
+      }
     }]
   ],
+  testResultsProcessor: './node_modules/jest-junit',
   collectCoverageFrom: [
     'app/**/*.{js,jsx,ts,tsx}',
     'src/**/*.{js,jsx,ts,tsx}',

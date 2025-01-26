@@ -37,6 +37,7 @@ export function FeatureFlags() {
     
     const transaction = Sentry.startTransaction({
       name: "Feature Performance Test",
+      op: "feature.performance"
     });
 
     try {
@@ -109,7 +110,7 @@ export function FeatureFlags() {
           variant="secondary"
           className="flex items-center gap-2"
           onClick={simulateFeatureError}
-          disabled={!!loading}
+          disabled={loading !== null}
         >
           {loading === "error" ? (
             <Loader2 className="h-4 w-4 animate-spin" data-testid="loading-spinner" />
@@ -123,7 +124,7 @@ export function FeatureFlags() {
           variant="secondary"
           className="flex items-center gap-2"
           onClick={simulateFeaturePerformance}
-          disabled={!!loading}
+          disabled={loading !== null}
         >
           {loading === "performance" ? (
             <Loader2 className="h-4 w-4 animate-spin" data-testid="loading-spinner" />
@@ -137,7 +138,7 @@ export function FeatureFlags() {
           variant="secondary"
           className="flex items-center gap-2 col-span-full"
           onClick={updateUserContext}
-          disabled={!!loading}
+          disabled={loading !== null}
         >
           {loading === "context" ? (
             <Loader2 className="h-4 w-4 animate-spin" data-testid="loading-spinner" />

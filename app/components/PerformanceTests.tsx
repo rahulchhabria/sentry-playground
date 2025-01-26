@@ -15,7 +15,8 @@ export function PerformanceTests() {
       op: "slow-operation"
     });
 
-    Sentry.getCurrentHub().configureScope(scope => {
+    // Set the transaction as the current span
+    Sentry.configureScope(scope => {
       scope.setSpan(transaction);
     });
 
@@ -106,10 +107,10 @@ export function PerformanceTests() {
         variant="secondary"
         className="flex items-center gap-2"
         onClick={simulateSlowOperation}
-        disabled={!!loading}
+          disabled={loading !== null}
       >
         {loading === "slow-op" ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
+          <Loader2 className="h-4 w-4 animate-spin" data-testid="loading-spinner" />
         ) : (
           <Clock className="h-4 w-4" />
         )}
@@ -120,10 +121,10 @@ export function PerformanceTests() {
         variant="secondary"
         className="flex items-center gap-2"
         onClick={simulateSlowAPI}
-        disabled={!!loading}
+          disabled={loading !== null}
       >
         {loading === "slow-api" ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
+          <Loader2 className="h-4 w-4 animate-spin" data-testid="loading-spinner" />
         ) : (
           <Server className="h-4 w-4" />
         )}
@@ -134,10 +135,10 @@ export function PerformanceTests() {
         variant="secondary"
         className="flex items-center gap-2 col-span-full"
         onClick={simulateNestedOperations}
-        disabled={!!loading}
+          disabled={loading !== null}
       >
         {loading === "nested" ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
+          <Loader2 className="h-4 w-4 animate-spin" data-testid="loading-spinner" />
         ) : (
           <Database className="h-4 w-4" />
         )}

@@ -36,3 +36,7 @@ jobs:
         flags: unittests
         name: codecov-umbrella
         fail_ci_if_error: true
+        verbose: true
+        test_analytics: true
+        test_analytics_provider: jest
+        test_analytics_format: junit

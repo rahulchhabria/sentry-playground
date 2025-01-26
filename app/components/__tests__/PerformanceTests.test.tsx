@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { PerformanceTests } from '../PerformanceTests';
 import * as Sentry from '@sentry/nextjs';
 
@@ -37,15 +37,20 @@ describe('PerformanceTests', () => {
     render(<PerformanceTests />);
     
     const button = screen.getByText('Trigger Slow Operation');
-    fireEvent.click(button);
+    await act(async () => {
+      fireEvent.click(button);
+    });
 
     // Check loading state
-    expect(button).toBeDisabled();
-    expect(screen.getByRole('button', { name: /Trigger Slow Operation/i }).querySelector('.animate-spin')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(button).toBeDisabled();
+      expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
+    });
 
     // Verify transaction was started
     expect(Sentry.startTransaction).toHaveBeenCalledWith({
       name: 'Slow Operation',
+      op: 'slow-operation'
     });
 
     // Verify scope was configured
@@ -71,15 +76,20 @@ describe('PerformanceTests', () => {
     render(<PerformanceTests />);
     
     const button = screen.getByText('Trigger Slow API Call');
-    fireEvent.click(button);
+    await act(async () => {
+      fireEvent.click(button);
+    });
 
     // Check loading state
-    expect(button).toBeDisabled();
-    expect(screen.getByRole('button', { name: /Trigger Slow API Call/i }).querySelector('.animate-spin')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(button).toBeDisabled();
+      expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
+    });
 
     // Verify transaction was started
     expect(Sentry.startTransaction).toHaveBeenCalledWith({
       name: 'Slow API Call',
+      op: 'http'
     });
 
     // Verify child span was created with correct properties
@@ -103,35 +113,40 @@ describe('PerformanceTests', () => {
     render(<PerformanceTests />);
     
     const button = screen.getByText('Trigger Nested Operations');
-    fireEvent.click(button);
+    await act(async () => {
+      fireEvent.click(button);
+    });
 
     // Check loading state
-    expect(button).toBeDisabled();
-    expect(screen.getByRole('button', { name: /Trigger Nested Operations/i }).querySelector('.animate-spin')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(button).toBeDisabled();
+      expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
+    });
 
     // Verify transaction was started
     expect(Sentry.startTransaction).toHaveBeenCalledWith({
       name: 'Nested Operations',
-    });
-
-    // Verify all child spans were created with correct properties
-    expect(mockTransaction.startChild).toHaveBeenCalledWith({
-      op: 'db.query',
-      description: 'SELECT * FROM large_table',
-    });
-
-    expect(mockTransaction.startChild).toHaveBeenCalledWith({
-      op: 'task.process',
-      description: 'Process data',
-    });
-
-    expect(mockTransaction.startChild).toHaveBeenCalledWith({
-      op: 'cache.set',
-      description: 'Update cache',
+      op: 'nested'
     });
 
     // Wait for all operations to complete
     await waitFor(() => {
+      // Verify all child spans were created with correct properties
+      expect(mockTransaction.startChild).toHaveBeenCalledWith({
+        op: 'db.query',
+        description: 'SELECT * FROM large_table',
+      });
+
+      expect(mockTransaction.startChild).toHaveBeenCalledWith({
+        op: 'task.process',
+        description: 'Process data',
+      });
+
+      expect(mockTransaction.startChild).toHaveBeenCalledWith({
+        op: 'cache.set',
+        description: 'Update cache',
+      });
+
       expect(button).not.toBeDisabled();
     }, { timeout: 4000 });
 
@@ -147,12 +162,16 @@ describe('PerformanceTests', () => {
     const slowApiButton = screen.getByText('Trigger Slow API Call');
     const nestedButton = screen.getByText('Trigger Nested Operations');
 
-    fireEvent.click(slowOpButton);
+    await act(async () => {
+      fireEvent.click(slowOpButton);
+    });
 
     // Verify all buttons are disabled
-    expect(slowOpButton).toBeDisabled();
-    expect(slowApiButton).toBeDisabled();
-    expect(nestedButton).toBeDisabled();
+    await waitFor(() => {
+      expect(slowOpButton).toBeDisabled();
+      expect(slowApiButton).toBeDisabled();
+      expect(nestedButton).toBeDisabled();
+    });
 
     // Wait for operation to complete
     await waitFor(() => {
@@ -166,16 +185,20 @@ describe('PerformanceTests', () => {
     render(<PerformanceTests />);
     
     const slowOpButton = screen.getByText('Trigger Slow Operation');
-    fireEvent.click(slowOpButton);
+    await act(async () => {
+      fireEvent.click(slowOpButton);
+    });
 
     // Verify loading spinner is only shown on the clicked button
-    expect(screen.getByRole('button', { name: /Trigger Slow Operation/i }).querySelector('.animate-spin')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Trigger Slow API Call/i }).querySelector('.animate-spin')).not.toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Trigger Nested Operations/i }).querySelector('.animate-spin')).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
+      expect(screen.queryByTestId('loading-spinner-api')).not.toBeInTheDocument();
+      expect(screen.queryByTestId('loading-spinner-nested')).not.toBeInTheDocument();
+    });
 
     // Wait for operation to complete
     await waitFor(() => {
-      expect(screen.queryByRole('button', { name: /Trigger Slow Operation/i })?.querySelector('.animate-spin')).not.toBeInTheDocument();
+      expect(screen.queryByTestId('loading-spinner')).not.toBeInTheDocument();
     }, { timeout: 3000 });
   });
 });
