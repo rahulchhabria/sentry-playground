@@ -26,7 +26,18 @@ export function LaunchDarklyProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const initLD = async () => {
+      // Start a transaction for LaunchDarkly initialization
+      const transaction = Sentry.startTransaction({
+        name: "LaunchDarkly Initialization",
+        op: "initialization"
+      });
+
       try {
+        const initSpan = transaction.startChild({
+          op: "launchdarkly.init",
+          description: "Initialize LaunchDarkly provider"
+        });
+
         const LDProvider = await asyncWithLDProvider({
           clientSideID,
           context,
@@ -44,6 +55,13 @@ export function LaunchDarklyProvider({ children }: { children: ReactNode }) {
           },
         });
 
+        initSpan.finish();
+        
+        const setupSpan = transaction.startChild({
+          op: "launchdarkly.setup",
+          description: "Setup LaunchDarkly provider"
+        });
+
         setLDProvider(() => {
           const flags = window.LD?.allFlags() || {};
           Sentry.setContext("feature_flags", flags);
@@ -59,6 +77,7 @@ export function LaunchDarklyProvider({ children }: { children: ReactNode }) {
             });
           });
 
+          setupSpan.finish();
           return LDProvider;
         });
 
@@ -88,6 +107,8 @@ export function LaunchDarklyProvider({ children }: { children: ReactNode }) {
         console.error('Failed to initialize LaunchDarkly:', error);
         // Return a basic provider that just renders children
         setLDProvider(() => ({ children }: { children: ReactNode }) => <>{children}</>);
+      } finally {
+        transaction.finish();
       }
     };
 
