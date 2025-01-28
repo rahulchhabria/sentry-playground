@@ -5,6 +5,7 @@ import { Providers } from './providers';
 import { SentryToolbarProvider } from '../src/components/SentryToolbarProvider';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Suspense } from 'react';
+import { SpotlightInitializer } from './components/SpotlightInitializer';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -40,6 +41,7 @@ export default function RootLayout({
           </SentryToolbarProvider>
         </Suspense>
         <SpeedInsights />
+        <SpotlightInitializer />
       </body>
     </html>
   );
