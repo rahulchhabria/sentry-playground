@@ -16,9 +16,14 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'Sentry Playground',
   description: 'A testing ground for Sentry error monitoring and performance tracking features',
-  viewport: 'width=device-width, initial-scale=1',
-  themeColor: '#ffffff',
 };
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
+
+export const themeColor = '#ffffff';
 
 export default function RootLayout({
   children,

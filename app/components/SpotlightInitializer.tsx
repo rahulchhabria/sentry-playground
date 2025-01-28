@@ -5,7 +5,15 @@ import { initSpotlight } from '../spotlight';
 
 export function SpotlightInitializer() {
   useEffect(() => {
-    initSpotlight();
+    const init = async () => {
+      try {
+        await initSpotlight();
+      } catch (error) {
+        console.error('Failed to initialize Spotlight:', error);
+      }
+    };
+    
+    init();
   }, []);
 
   return null;
