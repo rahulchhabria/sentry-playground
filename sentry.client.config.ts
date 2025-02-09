@@ -38,7 +38,7 @@ Sentry.init({
   tracesSampleRate: 1.0,
   enableTracing: true,
 
-  // Session Replay
+  // Session Replay (more detailed configuration)
   replaysSessionSampleRate: 1.0,
   replaysOnErrorSampleRate: 1.0,
 
@@ -46,8 +46,24 @@ Sentry.init({
   integrations: [
     new Sentry.BrowserTracing(),
     new Sentry.Replay({
+      // Capture everything
       maskAllText: false,
       blockAllMedia: false,
+      maskAllInputs: false,
+      
+      // Additional Replay settings
+      networkDetailAllowUrls: [/.*/],
+      networkCaptureBodies: true,
+      networkRequestHeaders: ["*"],
+      networkResponseHeaders: ["*"],
+      
+      // Capture user interactions
+      clickDetection: {
+        enableRageClick: true,
+        enableDeadClick: true,
+        rageClickThreshold: 4,
+        deadClickTimeout: 10000,
+      },
     }),
   ],
 
@@ -60,6 +76,14 @@ Sentry.init({
   // Allow errors from all origins
   allowUrls: [/.*/],
   
+  // Track user interactions
+  enableUserInteractionTracing: true,
+  enableUserInteractionTracing: {
+    idleTimeout: 5000,
+    finalTimeout: 30000,
+    heartbeatInterval: 5000,
+  },
+
   beforeSend(event) {
     console.log('Sending event to Sentry:', event);
     return event;
