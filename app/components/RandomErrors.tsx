@@ -4,12 +4,13 @@ import { Button } from "@/components/ui/button";
 import { AlertTriangle, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import * as Sentry from "@sentry/nextjs";
 
 const errorTypes = [
   {
     name: "TypeError",
     generate: () => {
-      toast.error("TypeError triggered");
+      Sentry.captureMessage("TypeError triggered", "error");
       const obj = null;
       obj.someMethod();
     }
@@ -17,7 +18,7 @@ const errorTypes = [
   {
     name: "ReferenceError",
     generate: () => {
-      toast.error("ReferenceError triggered");
+      Sentry.captureMessage("ReferenceError triggered", "error");
       nonExistentFunction();
     }
   },
@@ -79,43 +80,99 @@ export function RandomErrors() {
     setLoading(true);
     setProgress(0);
 
+    const transaction = Sentry.startTransaction({
+      name: "random-errors",
+      op: "test",
+    });
+
+    Sentry.configureScope(scope => {
+      scope.setTag("test_type", "random_errors");
+      scope.setContext("test_info", {
+        total_errors: 20,
+        test_run_id: Date.now(),
+      });
+    });
+
     for (let i = 0; i < 20; i++) {
       await new Promise(resolve => setTimeout(resolve, 200));
       try {
         const randomIndex = Math.floor(Math.random() * errorTypes.length);
         errorTypes[randomIndex].generate();
       } catch (error) {
+        Sentry.captureException(error, {
+          tags: {
+            error_index: i,
+            error_type: errorTypes[randomIndex].name,
+          },
+        });
         toast.error(`Error ${i + 1}/20: ${error.message}`);
       }
       setProgress(i + 1);
     }
 
+    transaction.finish();
     setLoading(false);
     toast.success("Completed sending random errors");
   };
 
   const throwFrontendError = () => {
-    toast.error("Frontend error triggered");
-    throw new Error("Manual frontend error");
+    try {
+      throw new Error("Manual frontend error");
+    } catch (error) {
+      Sentry.captureException(error, {
+        tags: {
+          error_type: "frontend",
+          test_type: "manual",
+        },
+      });
+      toast.error("Frontend error triggered");
+    }
   };
 
   const throwPromiseError = async () => {
-    toast.error("Promise error triggered");
-    await new Promise((_, reject) => {
-      reject(new Error("Async operation failed"));
-    });
+    try {
+      await new Promise((_, reject) => {
+        reject(new Error("Async operation failed"));
+      });
+    } catch (error) {
+      Sentry.captureException(error, {
+        tags: {
+          error_type: "promise",
+          test_type: "manual",
+        },
+      });
+      toast.error("Promise error triggered");
+    }
   };
 
   const throwNetworkError = async () => {
-    toast.error("Network error triggered");
-    await fetch('/api/non-existent-endpoint');
+    try {
+      await fetch('/api/non-existent-endpoint');
+    } catch (error) {
+      Sentry.captureException(error, {
+        tags: {
+          error_type: "network",
+          test_type: "manual",
+        },
+      });
+      toast.error("Network error triggered");
+    }
   };
 
   const throwMemoryError = () => {
-    toast.error("Memory error triggered");
-    const arr = [];
-    while (true) {
-      arr.push(new Array(10000000));
+    try {
+      const arr = [];
+      while (true) {
+        arr.push(new Array(10000000));
+      }
+    } catch (error) {
+      Sentry.captureException(error, {
+        tags: {
+          error_type: "memory",
+          test_type: "manual",
+        },
+      });
+      toast.error("Memory error triggered");
     }
   };
 

@@ -6,6 +6,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Suspense } from 'react';
 import { SpotlightInitializer } from './components/SpotlightInitializer';
 import { Toaster } from "sonner";
+import * as Sentry from "@sentry/nextjs";
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -30,6 +31,12 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // Verify Sentry is initialized
+  console.log("Sentry initialized:", {
+    enabled: Sentry.getCurrentHub().getClient()?.getOptions().enabled,
+    dsn: Sentry.getCurrentHub().getClient()?.getOptions().dsn,
+  });
+
   return (
     <html lang="en">
       <body className={inter.className}>
