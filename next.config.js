@@ -15,6 +15,10 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_SENTRY_RELEASE: process.env.VERCEL_GIT_COMMIT_SHA || "development",
   },
+  sentry: {
+    hideSourceMaps: true,
+    autoInstrumentServerFunctions: true,
+  }
 };
 
 // Injected content via Sentry wizard below
@@ -30,6 +34,7 @@ module.exports = withSentryConfig(
     silent: true,
     org: "rc-sentry-projects",
     project: "bolt-sentry-simulator",
+    authToken: "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",
 
     // Add monitoring configuration
     monitor: {
