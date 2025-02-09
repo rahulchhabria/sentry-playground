@@ -1,13 +1,18 @@
 import * as Sentry from "@sentry/nextjs";
 
 Sentry.init({
-  dsn: "https://891119ef51d56b1a8c9193f32047d068@o4506312335294464.ingest.us.sentry.io/4508672160628736",
+  dsn: process.env.SENTRY_DSN,
   
-  // Enable debug mode
-  debug: true,
-  
-  // Ensure Sentry is enabled
+  // Enable Sentry in all environments
   enabled: true,
+
+  // Set different configurations based on environment
+  ...(process.env.NODE_ENV === 'development' ? {
+    beforeSend(event) {
+      console.log('Sending event to Sentry:', event);
+      return event;
+    },
+  } : {}),
   
   // Set environment
   environment: process.env.NODE_ENV || "development",
