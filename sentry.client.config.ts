@@ -30,147 +30,44 @@ const featureFlagAdapter = {
 Sentry.init({
   dsn: "https://891119ef51d56b1a8c9193f32047d068@o4506312335294464.ingest.us.sentry.io/4508672160628736",
   
-  // Enable Sentry in all environments
+  // Enable all features
   enabled: true,
+  
+  // Performance Monitoring
+  tracesSampleRate: 1.0,
+  enableTracing: true,
 
-  // Set different configurations based on environment
-  ...(process.env.NODE_ENV === 'development' ? {
-    beforeSend(event) {
-      console.log('Sending event to Sentry:', event);
-      return event;
-    },
-  } : {}),
-  
-  // Set environment
-  environment: process.env.NODE_ENV,
-  
-  // Initialize integrations
+  // Session Replay
+  replaysSessionSampleRate: 1.0, // Record all sessions
+  replaysOnErrorSampleRate: 1.0, // Record all sessions with errors
+
+  // Integrations
   integrations: [
-    // Add feature flag adapter for dev toolbar
-    {
-      name: "feature-flags",
-      setupOnce: (addGlobalEventProcessor: (callback: (event: any) => Promise<any>) => void) => {
-        // Register the feature flag adapter with Sentry's dev tools
-        if (typeof window !== 'undefined') {
-          // Register the feature flag adapter with Sentry's dev tools
-          (window as any).__SENTRY__ = (window as any).__SENTRY__ || {};
-          (window as any).__SENTRY__.devtools = (window as any).__SENTRY__.devtools || {};
-          (window as any).__SENTRY__.devtools.featureFlags = {
-            enabled: true,
-            getFeatureFlags: async () => {
-              try {
-                const allFlags = await featureFlagAdapter.getFlags();
-                return {
-                  flags: Object.entries(allFlags).map(([key, value]) => ({
-                    id: key,
-                    name: key,
-                    variant: {
-                      value: value.value,
-                      status: 'active'
-                    }
-                  })),
-                  hasError: false
-                };
-              } catch (error: any) {
-                return {
-                  flags: [],
-                  hasError: true,
-                  errorMessage: error?.message || 'Unknown error'
-                };
-              }
-            }
-          };
-
-          // Also expose the feature flags globally for Sentry's dev toolbar
-          (window as any).__SENTRY_DEVTOOLS__ = {
-            featureFlags: {
-              enabled: true,
-              getFeatureFlags: async () => {
-                try {
-                  const allFlags = await featureFlagAdapter.getFlags();
-                  return {
-                    flags: Object.entries(allFlags).map(([key, value]) => ({
-                      id: key,
-                      name: key,
-                      variant: {
-                        value: value.value,
-                        status: 'active'
-                      }
-                    })),
-                    hasError: false
-                  };
-                } catch (error: any) {
-                  return {
-                    flags: [],
-                    hasError: true,
-                    errorMessage: error?.message || 'Unknown error'
-                  };
-                }
-              }
-            }
-          };
-        }
-        
-        // Also add flags to event contexts
-        addGlobalEventProcessor(async (event) => {
-          try {
-            const flags = await featureFlagAdapter.getFlags();
-            event.contexts = event.contexts || {};
-            event.contexts['feature-flags'] = flags;
-          } catch (e) {
-            console.error('Error processing feature flags:', e);
-          }
-          return event;
-        });
-      }
-    },
     new Sentry.BrowserTracing({
       tracingOrigins: ["localhost", /^\//],
       startTransactionOnLocationChange: true,
       startTransactionOnPageLoad: true,
     }),
     new Sentry.Replay({
+      // Replay Options
       maskAllText: false,
       blockAllMedia: false,
+      maskAllInputs: true,
     }),
   ],
 
-  // Performance Monitoring
-  tracesSampleRate: 1.0,
-  
-  // Session Replay
-  replaysSessionSampleRate: 1.0, // Record 100% of sessions
-  replaysOnErrorSampleRate: 1.0, // Record 100% of sessions with errors
+  // Environment
+  environment: process.env.NODE_ENV,
 
-  // Session tracking
-  autoSessionTracking: true,
+  // Release tracking
   release: process.env.NEXT_PUBLIC_SENTRY_RELEASE || "development",
 
-  // Ensure breadcrumbs are captured
-  maxBreadcrumbs: 100,
-  attachStacktrace: true,
-
-  // Initialize performance monitoring
-  enableTracing: true,
-
-  // Ensure errors are always sent
+  // User Feedback
   beforeSend(event) {
-    // Log the event being sent (for debugging)
-    console.log("Sending event to Sentry:", event);
-
-    if (!event.contexts) {
-      event.contexts = {};
+    // Log events in development
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Sending event to Sentry:', event);
     }
-
-    // Add replay context if available
-    const scope = Sentry.getCurrentHub()?.getScope();
-    if (scope) {
-      const replay = scope.getAttachments?.()?.length ? scope.getAttachments?.()[0] : null;
-      if (replay) {
-        event.contexts.replay = { replay_id: replay };
-      }
-    }
-
     return event;
   },
 });
