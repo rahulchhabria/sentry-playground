@@ -10,39 +10,31 @@ export function ReleaseInfo() {
   const [loading, setLoading] = useState<string | null>(null);
   const currentRelease = process.env.NEXT_PUBLIC_SENTRY_RELEASE || "development";
 
-  const simulateReleaseError = async () => {
-    setLoading("error");
-    try {
-      // Simulate an error with release context
-      throw new Error("Error in current release");
-    } catch (error) {
-      Sentry.captureException(error, {
-        tags: {
-          release: currentRelease,
-          feature: "critical-path",
-        },
-      });
-    } finally {
-      setLoading(null);
-    }
+  const simulateReleaseError = () => {
+    Sentry.captureException(new Error("Release-specific error"), {
+      tags: {
+        release: process.env.NEXT_PUBLIC_SENTRY_RELEASE || "development",
+        type: "release-test"
+      }
+    });
   };
 
-  const simulateReleaseRegression = async () => {
-    setLoading("regression");
-    try {
-      // Simulate a regression across releases
-      throw new Error("Regression detected in feature");
-    } catch (error) {
-      Sentry.captureException(error, {
-        tags: {
-          release: currentRelease,
-          previousRelease: "v1.0.0",
-          feature: "payment-processing",
-        },
-      });
-    } finally {
-      setLoading(null);
-    }
+  const simulateReleaseRegression = () => {
+    Sentry.captureException(new Error("Performance regression in new release"), {
+      tags: {
+        release: process.env.NEXT_PUBLIC_SENTRY_RELEASE || "development",
+        type: "regression"
+      }
+    });
+  };
+
+  const simulateFeatureError = () => {
+    Sentry.captureException(new Error("New feature implementation error"), {
+      tags: {
+        release: process.env.NEXT_PUBLIC_SENTRY_RELEASE || "development",
+        type: "feature-error"
+      }
+    });
   };
 
   const simulateHealthySession = () => {
@@ -92,6 +84,20 @@ export function ReleaseInfo() {
             <GitPullRequest className="h-4 w-4" />
           )}
           Simulate Release Regression
+        </Button>
+
+        <Button
+          variant="secondary"
+          className="flex items-center gap-2"
+          onClick={simulateFeatureError}
+          disabled={!!loading}
+        >
+          {loading === "feature-error" ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <GitCommit className="h-4 w-4" />
+          )}
+          Simulate Feature Error
         </Button>
 
         <Button

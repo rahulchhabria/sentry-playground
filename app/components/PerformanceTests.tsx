@@ -6,143 +6,91 @@ import { Clock, Database, Loader2, Server } from "lucide-react";
 import { useState } from "react";
 
 export function PerformanceTests() {
-  const [loading, setLoading] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const simulateSlowOperation = async () => {
-    setLoading("slow-op");
     const transaction = Sentry.startTransaction({
-      name: "Slow Operation",
-      op: "slow-operation"
-    });
-
-    // Set the transaction as the current span
-    Sentry.configureScope(scope => {
-      scope.setSpan(transaction);
-    });
-
-    // Parent span for the entire operation
-    const span = transaction.startChild({
-      op: "task",
-      description: "Expensive calculation",
-    });
-
-    // Simulate heavy computation
-    const startTime = Date.now();
-    while (Date.now() - startTime < 2000) {
-      // Busy wait to simulate CPU-intensive task
-    }
-
-    span.finish();
-    transaction.finish();
-    setLoading(null);
-  };
-
-  const simulateSlowAPI = async () => {
-    setLoading("slow-api");
-    const transaction = Sentry.startTransaction({
-      name: "Slow API Call",
-      op: "http"
+      name: "slow-operation",
+      op: "test.performance",
     });
 
     try {
-      const span = transaction.startChild({
-        op: "http.client",
-        description: "GET /api/slow",
-      });
-
+      // Simulate a slow operation
       await new Promise(resolve => setTimeout(resolve, 3000));
-      
-      span.setStatus("ok");
-      span.finish();
+      transaction.setStatus("ok");
     } catch (error) {
-      transaction.setStatus("internal_error");
-      throw error;
+      transaction.setStatus("error");
+      Sentry.captureException(error);
     } finally {
       transaction.finish();
-      setLoading(null);
     }
   };
 
-  const simulateNestedOperations = async () => {
-    setLoading("nested");
+  const simulateMemoryLeak = () => {
     const transaction = Sentry.startTransaction({
-      name: "Nested Operations",
-      op: "nested"
+      name: "memory-leak",
+      op: "test.memory",
     });
 
-    // Database query simulation
-    const dbSpan = transaction.startChild({
-      op: "db.query",
-      description: "SELECT * FROM large_table",
-    });
-    
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    dbSpan.finish();
+    try {
+      const arr = [];
+      for (let i = 0; i < 1000000; i++) {
+        arr.push(new Array(1000));
+      }
+      transaction.setStatus("ok");
+    } catch (error) {
+      transaction.setStatus("error");
+      Sentry.captureException(error);
+    } finally {
+      transaction.finish();
+    }
+  };
 
-    // Processing simulation
-    const processSpan = transaction.startChild({
-      op: "task.process",
-      description: "Process data",
+  const simulateHighCPU = () => {
+    const transaction = Sentry.startTransaction({
+      name: "high-cpu",
+      op: "test.cpu",
     });
-    
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    processSpan.finish();
 
-    // Cache operation simulation
-    const cacheSpan = transaction.startChild({
-      op: "cache.set",
-      description: "Update cache",
-    });
-    
-    await new Promise(resolve => setTimeout(resolve, 500));
-    cacheSpan.finish();
-
-    transaction.finish();
-    setLoading(null);
+    try {
+      let result = 0;
+      for (let i = 0; i < 10000000; i++) {
+        result += Math.sqrt(i);
+      }
+      transaction.setStatus("ok");
+    } catch (error) {
+      transaction.setStatus("error");
+      Sentry.captureException(error);
+    } finally {
+      transaction.finish();
+    }
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl">
+    <div className="flex flex-col gap-4">
       <Button
         variant="secondary"
-        className="flex items-center gap-2"
         onClick={simulateSlowOperation}
-          disabled={loading !== null}
+        disabled={loading}
       >
-        {loading === "slow-op" ? (
-          <Loader2 className="h-4 w-4 animate-spin" data-testid="loading-spinner" />
-        ) : (
-          <Clock className="h-4 w-4" />
-        )}
-        Trigger Slow Operation
+        {loading ? (
+          <Loader2 className="h-4 w-4 animate-spin mr-2" />
+        ) : null}
+        Simulate Slow Operation
       </Button>
 
       <Button
         variant="secondary"
-        className="flex items-center gap-2"
-        onClick={simulateSlowAPI}
-          disabled={loading !== null}
+        onClick={simulateMemoryLeak}
       >
-        {loading === "slow-api" ? (
-          <Loader2 className="h-4 w-4 animate-spin" data-testid="loading-spinner" />
-        ) : (
-          <Server className="h-4 w-4" />
-        )}
-        Trigger Slow API Call
+        Simulate Memory Leak
       </Button>
 
       <Button
         variant="secondary"
-        className="flex items-center gap-2 col-span-full"
-        onClick={simulateNestedOperations}
-          disabled={loading !== null}
+        onClick={simulateHighCPU}
       >
-        {loading === "nested" ? (
-          <Loader2 className="h-4 w-4 animate-spin" data-testid="loading-spinner" />
-        ) : (
-          <Database className="h-4 w-4" />
-        )}
-        Trigger Nested Operations
+        Simulate High CPU Usage
       </Button>
     </div>
   );

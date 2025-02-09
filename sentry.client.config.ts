@@ -42,7 +42,7 @@ Sentry.init({
   } : {}),
   
   // Set environment
-  environment: process.env.NODE_ENV || "development",
+  environment: process.env.NODE_ENV,
   
   // Initialize integrations
   integrations: [
@@ -132,16 +132,15 @@ Sentry.init({
     new Sentry.Replay({
       maskAllText: false,
       blockAllMedia: false,
-      maskAllInputs: true,
-      networkDetailAllowUrls: ["*"],
-      networkCaptureBodies: true,
     }),
   ],
 
-  // Performance sample rates
+  // Performance Monitoring
   tracesSampleRate: 1.0,
-  replaysSessionSampleRate: 1.0,
-  replaysOnErrorSampleRate: 1.0,
+  
+  // Session Replay
+  replaysSessionSampleRate: 1.0, // Record 100% of sessions
+  replaysOnErrorSampleRate: 1.0, // Record 100% of sessions with errors
 
   // Session tracking
   autoSessionTracking: true,
