@@ -9,6 +9,7 @@ import { RandomSpans } from "./components/RandomSpans";
 import { RageClickButton } from "./components/RageClickButton";
 import { AlertTriangle, Bug, Flag, Gauge, GitBranch, MousePointer2 } from "lucide-react";
 import { useFlags } from "launchdarkly-react-client-sdk";
+import './components/RandomErrors.css';
 
 export default function Home() {
   const { 

@@ -106,6 +106,39 @@ export function RandomErrors() {
     setLoading(false);
   };
 
+  const throwFrontendError = () => {
+    throw new Error("Manual frontend error");
+  };
+
+  const throwPromiseError = async () => {
+    try {
+      await new Promise((_, reject) => {
+        reject(new Error("Async operation failed"));
+      });
+    } catch (error) {
+      Sentry.captureException(error);
+    }
+  };
+
+  const throwNetworkError = async () => {
+    try {
+      await fetch('/api/non-existent-endpoint');
+    } catch (error) {
+      Sentry.captureException(error);
+    }
+  };
+
+  const throwMemoryError = () => {
+    try {
+      const arr = [];
+      while (true) {
+        arr.push(new Array(10000000));
+      }
+    } catch (error) {
+      Sentry.captureException(error);
+    }
+  };
+
   return (
     <div className="flex flex-col items-center gap-4">
       <Button
@@ -128,6 +161,36 @@ export function RandomErrors() {
           Sending errors: {progress}/20
         </div>
       )}
+
+      <div className="error-buttons-container">
+        <h3>Test Error Tracking</h3>
+        <div className="error-buttons">
+          <button 
+            onClick={throwFrontendError}
+            className="error-button"
+          >
+            Throw Frontend Error
+          </button>
+          <button 
+            onClick={throwPromiseError}
+            className="error-button"
+          >
+            Throw Promise Error
+          </button>
+          <button 
+            onClick={throwNetworkError}
+            className="error-button"
+          >
+            Throw Network Error
+          </button>
+          <button 
+            onClick={throwMemoryError}
+            className="error-button"
+          >
+            Throw Memory Error
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
