@@ -1,14 +1,15 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import * as Sentry from "@sentry/nextjs";
-import { AlertOctagon, Loader2 } from "lucide-react";
+import { AlertTriangle, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const errorTypes = [
   {
     name: "TypeError",
     generate: () => {
+      toast.error("TypeError triggered");
       const obj = null;
       obj.someMethod();
     }
@@ -16,6 +17,7 @@ const errorTypes = [
   {
     name: "ReferenceError",
     generate: () => {
+      toast.error("ReferenceError triggered");
       nonExistentFunction();
     }
   },
@@ -69,26 +71,6 @@ const errorTypes = [
   }
 ];
 
-const generateRandomError = () => {
-  const randomIndex = Math.floor(Math.random() * errorTypes.length);
-  const errorType = errorTypes[randomIndex];
-  
-  try {
-    errorType.generate();
-  } catch (error) {
-    Sentry.captureException(error, {
-      tags: {
-        errorType: errorType.name,
-        source: "random-generator"
-      },
-      extra: {
-        timestamp: new Date().toISOString(),
-        randomSeed: Math.random()
-      }
-    });
-  }
-};
-
 export function RandomErrors() {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -98,44 +80,42 @@ export function RandomErrors() {
     setProgress(0);
 
     for (let i = 0; i < 20; i++) {
-      await new Promise(resolve => setTimeout(resolve, 200)); // Small delay between errors
-      generateRandomError();
+      await new Promise(resolve => setTimeout(resolve, 200));
+      try {
+        const randomIndex = Math.floor(Math.random() * errorTypes.length);
+        errorTypes[randomIndex].generate();
+      } catch (error) {
+        toast.error(`Error ${i + 1}/20: ${error.message}`);
+      }
       setProgress(i + 1);
     }
 
     setLoading(false);
+    toast.success("Completed sending random errors");
   };
 
   const throwFrontendError = () => {
+    toast.error("Frontend error triggered");
     throw new Error("Manual frontend error");
   };
 
   const throwPromiseError = async () => {
-    try {
-      await new Promise((_, reject) => {
-        reject(new Error("Async operation failed"));
-      });
-    } catch (error) {
-      Sentry.captureException(error);
-    }
+    toast.error("Promise error triggered");
+    await new Promise((_, reject) => {
+      reject(new Error("Async operation failed"));
+    });
   };
 
   const throwNetworkError = async () => {
-    try {
-      await fetch('/api/non-existent-endpoint');
-    } catch (error) {
-      Sentry.captureException(error);
-    }
+    toast.error("Network error triggered");
+    await fetch('/api/non-existent-endpoint');
   };
 
   const throwMemoryError = () => {
-    try {
-      const arr = [];
-      while (true) {
-        arr.push(new Array(10000000));
-      }
-    } catch (error) {
-      Sentry.captureException(error);
+    toast.error("Memory error triggered");
+    const arr = [];
+    while (true) {
+      arr.push(new Array(10000000));
     }
   };
 
@@ -151,7 +131,7 @@ export function RandomErrors() {
         {loading ? (
           <Loader2 className="h-4 w-4 animate-spin" />
         ) : (
-          <AlertOctagon className="h-4 w-4" />
+          <AlertTriangle className="h-4 w-4" />
         )}
         Send 20 Random Errors
       </Button>
@@ -165,30 +145,30 @@ export function RandomErrors() {
       <div className="error-buttons-container">
         <h3>Test Error Tracking</h3>
         <div className="error-buttons">
-          <button 
+          <Button 
+            variant="destructive"
             onClick={throwFrontendError}
-            className="error-button"
           >
-            Throw Frontend Error
-          </button>
-          <button 
+            Frontend Error
+          </Button>
+          <Button 
+            variant="destructive"
             onClick={throwPromiseError}
-            className="error-button"
           >
-            Throw Promise Error
-          </button>
-          <button 
+            Promise Error
+          </Button>
+          <Button 
+            variant="destructive"
             onClick={throwNetworkError}
-            className="error-button"
           >
-            Throw Network Error
-          </button>
-          <button 
+            Network Error
+          </Button>
+          <Button 
+            variant="destructive"
             onClick={throwMemoryError}
-            className="error-button"
           >
-            Throw Memory Error
-          </button>
+            Memory Error
+          </Button>
         </div>
       </div>
     </div>

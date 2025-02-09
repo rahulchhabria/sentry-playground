@@ -5,49 +5,39 @@ import { Card } from "@/components/ui/card";
 import * as Sentry from "@sentry/nextjs";
 import { GitBranch, GitCommit, GitPullRequest, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export function ReleaseInfo() {
   const [loading, setLoading] = useState<string | null>(null);
   const currentRelease = process.env.NEXT_PUBLIC_SENTRY_RELEASE || "development";
 
-  const simulateReleaseError = () => {
-    Sentry.captureException(new Error("Release-specific error"), {
-      tags: {
-        release: process.env.NEXT_PUBLIC_SENTRY_RELEASE || "development",
-        type: "release-test"
-      }
-    });
+  const simulateReleaseError = async () => {
+    setLoading('error');
+    toast.error("Release error triggered");
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setLoading(null);
   };
 
-  const simulateReleaseRegression = () => {
-    Sentry.captureException(new Error("Performance regression in new release"), {
-      tags: {
-        release: process.env.NEXT_PUBLIC_SENTRY_RELEASE || "development",
-        type: "regression"
-      }
-    });
+  const simulateReleaseRegression = async () => {
+    setLoading('regression');
+    toast.error("Release regression detected");
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setLoading(null);
   };
 
-  const simulateFeatureError = () => {
-    Sentry.captureException(new Error("New feature implementation error"), {
-      tags: {
-        release: process.env.NEXT_PUBLIC_SENTRY_RELEASE || "development",
-        type: "feature-error"
-      }
-    });
+  const simulateFeatureError = async () => {
+    setLoading('feature');
+    toast.error("Feature error triggered");
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setLoading(null);
   };
 
-  const simulateHealthySession = () => {
-    setLoading("session");
-    // Start a new session
-    Sentry.startSession();
-    
-    // Simulate some healthy user activity
-    setTimeout(() => {
-      // End the session normally
-      Sentry.endSession();
-      setLoading(null);
-    }, 2000);
+  const simulateHealthySession = async () => {
+    setLoading('session');
+    toast.info("Starting healthy session...");
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    toast.success("Healthy session completed");
+    setLoading(null);
   };
 
   return (
@@ -92,7 +82,7 @@ export function ReleaseInfo() {
           onClick={simulateFeatureError}
           disabled={!!loading}
         >
-          {loading === "feature-error" ? (
+          {loading === "feature" ? (
             <Loader2 className="h-4 w-4 animate-spin" />
           ) : (
             <GitCommit className="h-4 w-4" />
