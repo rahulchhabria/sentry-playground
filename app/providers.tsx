@@ -1,21 +1,16 @@
 "use client";
 
-import { Suspense, lazy, type ReactNode } from "react";
+import { ThemeProvider } from "next-themes";
 
-const LaunchDarklyProvider = lazy(() => 
-  import('./components/LaunchDarklyProvider').then(mod => ({
-    default: mod.LaunchDarklyProvider
-  }))
-);
-
-interface ProvidersProps {
-  children: ReactNode;
-}
-
-export function Providers({ children }: ProvidersProps) {
+export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <Suspense fallback={<>{children}</>}>
-      <LaunchDarklyProvider>{children}</LaunchDarklyProvider>
-    </Suspense>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="dark"
+      enableSystem
+      disableTransitionOnChange
+    >
+      {children}
+    </ThemeProvider>
   );
 }
