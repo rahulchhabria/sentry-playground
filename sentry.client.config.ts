@@ -32,27 +32,22 @@ Sentry.init({
   
   // Enable all features
   enabled: true,
+  debug: true,
   
   // Performance Monitoring
   tracesSampleRate: 1.0,
   enableTracing: true,
 
   // Session Replay
-  replaysSessionSampleRate: 1.0, // Record all sessions
-  replaysOnErrorSampleRate: 1.0, // Record all sessions with errors
+  replaysSessionSampleRate: 1.0,
+  replaysOnErrorSampleRate: 1.0,
 
   // Integrations
   integrations: [
-    new Sentry.BrowserTracing({
-      tracingOrigins: ["localhost", /^\//],
-      startTransactionOnLocationChange: true,
-      startTransactionOnPageLoad: true,
-    }),
+    new Sentry.BrowserTracing(),
     new Sentry.Replay({
-      // Replay Options
       maskAllText: false,
       blockAllMedia: false,
-      maskAllInputs: true,
     }),
   ],
 
@@ -62,12 +57,11 @@ Sentry.init({
   // Release tracking
   release: process.env.NEXT_PUBLIC_SENTRY_RELEASE || "development",
 
-  // User Feedback
+  // Allow errors from all origins
+  allowUrls: [/.*/],
+  
   beforeSend(event) {
-    // Log events in development
-    if (process.env.NODE_ENV === 'development') {
-      console.log('Sending event to Sentry:', event);
-    }
+    console.log('Sending event to Sentry:', event);
     return event;
   },
 });
