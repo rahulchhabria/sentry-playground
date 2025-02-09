@@ -8,6 +8,15 @@ import { SpotlightInitializer } from './components/SpotlightInitializer';
 import { Toaster } from "sonner";
 import * as Sentry from "@sentry/nextjs";
 
+// Optimize font loading
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap',
+  preload: true,
+  fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Arial', 'sans-serif'],
+  adjustFontFallback: true,
+});
+
 // Initialize Sentry feedback widget
 if (typeof window !== 'undefined') {
   Sentry.init({
@@ -15,44 +24,46 @@ if (typeof window !== 'undefined') {
   });
 }
 
-const inter = Inter({ 
-  subsets: ['latin'],
-  display: 'swap', // Ensure text remains visible during webfont load
-  preload: true
-});
-
 export const metadata: Metadata = {
-  title: 'Sentry Playground',
-  description: 'A testing ground for error monitoring and performance tracking features',
+  title: 'Error Testing Playground',
+  description: 'Test error monitoring, performance tracking, and release management features',
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+  },
 };
-
-export const viewport = {
-  width: 'device-width',
-  initialScale: 1,
-};
-
-export const themeColor = '#ffffff';
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // Verify Sentry is initialized
-  console.log("Sentry initialized:", {
-    enabled: Sentry.getCurrentHub().getClient()?.getOptions().enabled,
-    dsn: Sentry.getCurrentHub().getClient()?.getOptions().dsn,
-  });
-
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <Suspense fallback={null}>
+    <html lang="en" className={inter.className}>
+      <head>
+        <link 
+          rel="preconnect" 
+          href="https://fonts.googleapis.com" 
+          crossOrigin="anonymous"
+        />
+        <link 
+          rel="preload" 
+          href="https://browser.sentry-cdn.com" 
+          as="script"
+          crossOrigin="anonymous"
+        />
+      </head>
+      <body>
+        <Suspense fallback={
+          <div className="min-h-screen bg-[#11121D] flex items-center justify-center">
+            <div className="animate-pulse">Loading...</div>
+          </div>
+        }>
           <Providers>{children}</Providers>
         </Suspense>
         <SpeedInsights />
         <SpotlightInitializer />
-        <Toaster />
+        <Toaster position="bottom-right" />
       </body>
     </html>
   );

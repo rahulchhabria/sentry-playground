@@ -8,6 +8,20 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: { unoptimized: true },
+  
+  // Add performance optimizations
+  experimental: {
+    optimizeCss: true,
+    optimizePackageImports: ['lucide-react'],
+  },
+  
+  // Optimize loading performance
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  
+  // Minimize JavaScript
+  swcMinify: true,
 };
 
 const { withSentryConfig } = require("@sentry/nextjs");
