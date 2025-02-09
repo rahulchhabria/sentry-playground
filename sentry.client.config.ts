@@ -38,7 +38,7 @@ Sentry.init({
   tracesSampleRate: 1.0,
   enableTracing: true,
 
-  // Session Replay
+  // Session Replay (more aggressive configuration)
   replaysSessionSampleRate: 1.0,
   replaysOnErrorSampleRate: 1.0,
 
@@ -48,15 +48,17 @@ Sentry.init({
       tracePropagationTargets: ["localhost", /^https:\/\//],
     }),
     new Sentry.Replay({
+      // Capture everything
       maskAllText: false,
       blockAllMedia: false,
       maskAllInputs: false,
       
-      // Capture user interactions
-      captureBody: true,
-      captureConsole: true,
-      captureMutations: true,
-      captureNetwork: true,
+      // Capture all details
+      stickySession: true,
+      networkDetailAllowUrls: [/.*/],
+      networkCaptureBodies: true,
+      networkRequestHeaders: ["*"],
+      networkResponseHeaders: ["*"],
     }),
   ],
 
@@ -69,11 +71,29 @@ Sentry.init({
   // Allow errors from all origins
   allowUrls: [/.*/],
 
-  // Feedback
+  // Session tracking
   autoSessionTracking: true,
+
+  // Initialize user data
+  initialScope: {
+    user: {
+      id: `user_${Math.random().toString(36).slice(2)}`,
+      ip_address: "{{auto}}",
+    },
+    tags: {
+      environment: process.env.NODE_ENV,
+      session_id: `session_${Date.now()}`,
+    },
+  },
 
   beforeSend(event) {
     console.log('Sending event to Sentry:', event);
     return event;
   },
+});
+
+// Set user after initialization
+Sentry.setUser({
+  id: `user_${Math.random().toString(36).slice(2)}`,
+  ip_address: "{{auto}}",
 });

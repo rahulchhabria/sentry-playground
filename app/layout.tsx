@@ -17,10 +17,19 @@ const inter = Inter({
   adjustFontFallback: true,
 });
 
-// Initialize Sentry feedback widget
+// Initialize Sentry as early as possible
 if (typeof window !== 'undefined') {
   Sentry.init({
     dsn: "https://891119ef51d56b1a8c9193f32047d068@o4506312335294464.ingest.us.sentry.io/4508672160628736",
+    integrations: [
+      new Sentry.Replay({
+        maskAllText: false,
+        blockAllMedia: false,
+        maskAllInputs: false,
+      }),
+    ],
+    replaysSessionSampleRate: 1.0,
+    replaysOnErrorSampleRate: 1.0,
   });
 }
 
