@@ -38,7 +38,7 @@ Sentry.init({
   tracesSampleRate: 1.0,
   enableTracing: true,
 
-  // Session Replay (more aggressive configuration)
+  // Session Replay - Capture everything
   replaysSessionSampleRate: 1.0,
   replaysOnErrorSampleRate: 1.0,
 
@@ -53,14 +53,29 @@ Sentry.init({
       blockAllMedia: false,
       maskAllInputs: false,
       
-      // Capture all details
+      // Enable session replay features
       stickySession: true,
+      
+      // Capture user interactions
+      captureBody: true,
       networkDetailAllowUrls: [/.*/],
       networkCaptureBodies: true,
       networkRequestHeaders: ["*"],
       networkResponseHeaders: ["*"],
+
+      // Dead click detection
+      clickDetection: {
+        enableDeadClick: true,
+        enableRageClick: true,
+        deadClickTimeout: 10000,
+        rageClickThreshold: 4,
+      },
     }),
   ],
+
+  // Enable user interaction tracking
+  enableUserInteractionTracing: true,
+  tracingOrigins: ["localhost", /^\//],
 
   // Environment
   environment: process.env.NODE_ENV,
@@ -71,19 +86,10 @@ Sentry.init({
   // Allow errors from all origins
   allowUrls: [/.*/],
 
-  // Session tracking
-  autoSessionTracking: true,
-
-  // Initialize user data
+  // Initialize user data for better tracking
   initialScope: {
-    user: {
-      id: `user_${Math.random().toString(36).slice(2)}`,
-      ip_address: "{{auto}}",
-    },
-    tags: {
-      environment: process.env.NODE_ENV,
-      session_id: `session_${Date.now()}`,
-    },
+    user: { id: `user_${Math.random().toString(36).slice(2)}` },
+    tags: { session_id: `session_${Date.now()}` },
   },
 
   beforeSend(event) {
