@@ -13,31 +13,81 @@ export function ReleaseInfo() {
 
   const simulateReleaseError = async () => {
     setLoading('error');
-    toast.error("Release error triggered");
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setLoading(null);
+    const transaction = Sentry.startTransaction({ name: "release-error" });
+    
+    try {
+      toast.info("Simulating release error...");
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      throw new Error("Release deployment error");
+    } catch (error) {
+      toast.error("Release error triggered");
+      Sentry.captureException(error, {
+        tags: { error_type: "release", test_type: "manual" },
+      });
+      transaction.setStatus("error");
+    } finally {
+      transaction.finish();
+      setLoading(null);
+    }
   };
 
   const simulateReleaseRegression = async () => {
     setLoading('regression');
-    toast.error("Release regression detected");
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setLoading(null);
+    const transaction = Sentry.startTransaction({ name: "release-regression" });
+    
+    try {
+      toast.info("Simulating performance regression...");
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      throw new Error("Performance regression detected");
+    } catch (error) {
+      toast.error("Release regression detected");
+      Sentry.captureException(error, {
+        tags: { error_type: "regression", test_type: "manual" },
+      });
+      transaction.setStatus("error");
+    } finally {
+      transaction.finish();
+      setLoading(null);
+    }
   };
 
   const simulateFeatureError = async () => {
     setLoading('feature');
-    toast.error("Feature error triggered");
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setLoading(null);
+    const transaction = Sentry.startTransaction({ name: "feature-error" });
+    
+    try {
+      toast.info("Testing new feature...");
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      throw new Error("New feature implementation error");
+    } catch (error) {
+      toast.error("Feature error triggered");
+      Sentry.captureException(error, {
+        tags: { error_type: "feature", test_type: "manual" },
+      });
+      transaction.setStatus("error");
+    } finally {
+      transaction.finish();
+      setLoading(null);
+    }
   };
 
   const simulateHealthySession = async () => {
     setLoading('session');
-    toast.info("Starting healthy session...");
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    toast.success("Healthy session completed");
-    setLoading(null);
+    const transaction = Sentry.startTransaction({ name: "healthy-session" });
+    
+    try {
+      toast.info("Starting healthy session...");
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      toast.success("Healthy session completed");
+      transaction.setStatus("ok");
+    } catch (error) {
+      toast.error("Session simulation failed");
+      Sentry.captureException(error);
+      transaction.setStatus("error");
+    } finally {
+      transaction.finish();
+      setLoading(null);
+    }
   };
 
   return (
@@ -47,10 +97,10 @@ export function ReleaseInfo() {
         <span>Current Release: {currentRelease}</span>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl">
+      <div className="grid grid-cols-1 gap-4 w-full max-w-2xl">
         <Button
           variant="secondary"
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 min-w-[200px] justify-center"
           onClick={simulateReleaseError}
           disabled={!!loading}
         >
@@ -59,12 +109,12 @@ export function ReleaseInfo() {
           ) : (
             <GitCommit className="h-4 w-4" />
           )}
-          Simulate Release Error
+          {loading === "error" ? "Processing..." : "Release Error"}
         </Button>
 
         <Button
           variant="secondary"
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 min-w-[200px] justify-center"
           onClick={simulateReleaseRegression}
           disabled={!!loading}
         >
@@ -73,12 +123,12 @@ export function ReleaseInfo() {
           ) : (
             <GitPullRequest className="h-4 w-4" />
           )}
-          Simulate Release Regression
+          {loading === "regression" ? "Processing..." : "Release Regression"}
         </Button>
 
         <Button
           variant="secondary"
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 min-w-[200px] justify-center"
           onClick={simulateFeatureError}
           disabled={!!loading}
         >
@@ -87,12 +137,12 @@ export function ReleaseInfo() {
           ) : (
             <GitCommit className="h-4 w-4" />
           )}
-          Simulate Feature Error
+          {loading === "feature" ? "Processing..." : "Feature Error"}
         </Button>
 
         <Button
           variant="secondary"
-          className="flex items-center gap-2 col-span-full"
+          className="flex items-center gap-2 min-w-[200px] justify-center"
           onClick={simulateHealthySession}
           disabled={!!loading}
         >
@@ -101,7 +151,7 @@ export function ReleaseInfo() {
           ) : (
             <GitBranch className="h-4 w-4" />
           )}
-          Simulate Healthy Session
+          {loading === "session" ? "Processing..." : "Healthy Session"}
         </Button>
       </div>
     </div>
