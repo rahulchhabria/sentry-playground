@@ -28,78 +28,57 @@ const featureFlagAdapter = {
 };
 
 Sentry.init({
-  dsn: "https://891119ef51d56b1a8c9193f32047d068@o4506312335294464.ingest.us.sentry.io/4508672160628736",
+  dsn: "https://891119ef51d56b1a8c9193f32047d068@o4506312335294464.ingest.sentry.io/4508672160628736",
   
-  // Enable all features
   enabled: true,
   debug: true,
   
-  // Performance Monitoring
   tracesSampleRate: 1.0,
   enableTracing: true,
 
-  // Session Replay - Capture everything
   replaysSessionSampleRate: 1.0,
   replaysOnErrorSampleRate: 1.0,
 
-  // Integrations
+  environment: process.env.NODE_ENV,
+  release: process.env.NEXT_PUBLIC_SENTRY_RELEASE || "development",
+
   integrations: [
     new Sentry.BrowserTracing({
       tracePropagationTargets: ["localhost", /^https:\/\//],
     }),
     new Sentry.Replay({
-      // Capture everything
+      // Privacy settings
       maskAllText: false,
       blockAllMedia: false,
       maskAllInputs: false,
       
-      // Enable session replay features
+      // Session settings
       stickySession: true,
       
-      // Capture user interactions
-      captureBody: true,
-      networkDetailAllowUrls: [/.*/],
+      // Network monitoring
+      networkDetailAllowUrls: ["*"],
       networkCaptureBodies: true,
       networkRequestHeaders: ["*"],
       networkResponseHeaders: ["*"],
 
-      // Dead click detection
-      clickDetection: {
-        enableDeadClick: true,
-        enableRageClick: true,
-        deadClickTimeout: 10000,
-        rageClickThreshold: 4,
-      },
-    }),
+      // Click detection is part of the default behavior of Replay
+      // No specific configuration needed for basic click detection
+
+      // Duration settings
+      minReplayDuration: 1000,
+      maxReplayDuration: 3600000
+    })
   ],
 
-  // Enable user interaction tracking
-  enableUserInteractionTracing: true,
-  tracingOrigins: ["localhost", /^\//],
-
-  // Environment
-  environment: process.env.NODE_ENV,
-
-  // Release tracking
-  release: process.env.NEXT_PUBLIC_SENTRY_RELEASE || "development",
-
-  // Allow errors from all origins
-  allowUrls: [/.*/],
-
-  // Initialize user data for better tracking
   initialScope: {
-    user: { id: `user_${Math.random().toString(36).slice(2)}` },
-    tags: { session_id: `session_${Date.now()}` },
-  },
-
-  beforeSend(event) {
-    console.log('Sending event to Sentry:', event);
-    return event;
-  },
+    user: { 
+      id: `user_${Math.random().toString(36).slice(2)}`,
+      ip_address: "{{auto}}"
+    },
+    tags: { 
+      session_id: `session_${Date.now()}`
+    }
+  }
 });
 
-// Set user after initialization
-Sentry.setUser({
-  id: `user_${Math.random().toString(36).slice(2)}`,
-  ip_address: "{{auto}}",
-});
+
