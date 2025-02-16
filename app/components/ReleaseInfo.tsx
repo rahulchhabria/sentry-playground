@@ -99,7 +99,7 @@ export function ReleaseInfo() {
 
       <div className="grid grid-cols-1 gap-4 w-full max-w-2xl">
         <Button
-          variant="secondary"
+          variant="destructive"
           className="flex items-center gap-2 min-w-[200px] justify-center"
           onClick={simulateReleaseError}
           disabled={!!loading}
@@ -113,7 +113,7 @@ export function ReleaseInfo() {
         </Button>
 
         <Button
-          variant="secondary"
+          variant="destructive"
           className="flex items-center gap-2 min-w-[200px] justify-center"
           onClick={simulateReleaseRegression}
           disabled={!!loading}
@@ -127,7 +127,7 @@ export function ReleaseInfo() {
         </Button>
 
         <Button
-          variant="secondary"
+          variant="destructive"
           className="flex items-center gap-2 min-w-[200px] justify-center"
           onClick={simulateFeatureError}
           disabled={!!loading}
@@ -141,7 +141,7 @@ export function ReleaseInfo() {
         </Button>
 
         <Button
-          variant="secondary"
+          variant="destructive"
           className="flex items-center gap-2 min-w-[200px] justify-center"
           onClick={simulateHealthySession}
           disabled={!!loading}

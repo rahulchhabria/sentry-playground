@@ -75,7 +75,7 @@ export function PerformanceTests() {
   return (
     <div className="flex flex-col gap-4">
       <Button
-        variant="secondary"
+        variant="destructive"
         className="flex items-center gap-2 min-w-[200px] justify-center"
         onClick={simulateSlowOperation}
         disabled={!!loading}
@@ -89,7 +89,7 @@ export function PerformanceTests() {
       </Button>
 
       <Button
-        variant="secondary"
+        variant="destructive"
         className="flex items-center gap-2 min-w-[200px] justify-center"
         onClick={simulateMemoryLeak}
         disabled={!!loading}
@@ -103,7 +103,7 @@ export function PerformanceTests() {
       </Button>
 
       <Button
-        variant="secondary"
+        variant="destructive"
         className="flex items-center gap-2 min-w-[200px] justify-center"
         onClick={simulateHighCPU}
         disabled={!!loading}

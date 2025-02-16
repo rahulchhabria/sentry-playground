@@ -18,8 +18,8 @@ export default function Home() {
             <Bug className="h-14 w-14 text-purple-500" />
             <AlertTriangle className="h-14 w-14 text-yellow-400" />
           </div>
-          <h1 className="text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-purple-600">
-            Error Testing Playground
+          <h1 className="text-5xl font-bold mb-6 pb-8 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-purple-600">
+            Sentry Testing Playground
           </h1>
           <p className="text-gray-400 max-w-2xl text-lg">
             Test error monitoring, performance tracking, and release management features below.
