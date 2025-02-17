@@ -97,7 +97,7 @@ export function ReleaseInfo() {
         <span>Current Release: {currentRelease}</span>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 w-full max-w-2xl">
+      <div className="flex gap-2 w-full max-w-2xl justify-center">
         <Button
           variant="destructive"
           className="flex items-center gap-2 min-w-[200px] justify-center"

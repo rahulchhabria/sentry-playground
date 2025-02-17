@@ -73,7 +73,7 @@ export function PerformanceTests() {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex gap-2">
       <Button
         variant="destructive"
         className="flex items-center gap-2 min-w-[200px] justify-center"
